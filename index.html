@@ -499,47 +499,39 @@ const questions = [
 ];
 
 const pathways = [
-  { name:"Naturalists",    cat:"❤ Heart",     color:"#1F5C8B", light:"#D6E8F7", desc:"You encounter God most powerfully through creation and the outdoors. Nature is your cathedral." },
-  { name:"Sensates",       cat:"❤ Heart",     color:"#1F5C8B", light:"#D6E8F7", desc:"You encounter God through beauty, art, and the senses — sight, sound, smell, touch, and taste." },
-  { name:"Enthusiasts",    cat:"❤ Heart",     color:"#1F5C8B", light:"#D6E8F7", desc:"You encounter God through celebration, joy, and expectancy. You love God with gusto!" },
-  { name:"Intellectuals",  cat:"💡 Mind",     color:"#1E6B3C", light:"#E8F5EE", desc:"You encounter God when your mind is awakened. Learning something new about God unlocks adoration." },
-  { name:"Traditionalists",cat:"💡 Mind",     color:"#1E6B3C", light:"#E8F5EE", desc:"You encounter God through ritual, symbol, and the sacred rhythms of Christian practice." },
-  { name:"Caregivers",     cat:"💪 Strength", color:"#7B3F6E", light:"#F7E8F0", desc:"You encounter God by loving and serving others. You see Christ in those who are hurting." },
-  { name:"Activists",      cat:"💪 Strength", color:"#7B3F6E", light:"#F7E8F0", desc:"You encounter God through action and justice. You are spiritually nourished by the battle." },
-  { name:"Contemplatives", cat:"🔥 Soul",     color:"#C8892A", light:"#FFF3DC", desc:"You encounter God through adoration and stillness — gazing lovingly at His face." },
-  { name:"Ascetics",       cat:"🔥 Soul",     color:"#C8892A", light:"#FFF3DC", desc:"You encounter God in solitude and simplicity. Stripping away distraction brings you close to Him." },
+  { name:"Naturalists",    cat:"Heart",     color:"#1F5C8B", light:"#D6E8F7", desc:"You encounter God most powerfully through creation and the outdoors. Nature is your cathedral." },
+  { name:"Sensates",       cat:"Heart",     color:"#1F5C8B", light:"#D6E8F7", desc:"You encounter God through beauty, art, and the senses — sight, sound, smell, touch, and taste." },
+  { name:"Enthusiasts",    cat:"Heart",     color:"#1F5C8B", light:"#D6E8F7", desc:"You encounter God through celebration, joy, and expectancy. You love God with gusto!" },
+  { name:"Intellectuals",  cat:"Mind",      color:"#1E6B3C", light:"#E8F5EE", desc:"You encounter God when your mind is awakened. Learning something new about God unlocks adoration." },
+  { name:"Traditionalists",cat:"Mind",      color:"#1E6B3C", light:"#E8F5EE", desc:"You encounter God through ritual, symbol, and the sacred rhythms of Christian practice." },
+  { name:"Caregivers",     cat:"Strength",  color:"#7B3F6E", light:"#F7E8F0", desc:"You encounter God by loving and serving others. You see Christ in those who are hurting." },
+  { name:"Activists",      cat:"Strength",  color:"#7B3F6E", light:"#F7E8F0", desc:"You encounter God through action and justice. You are spiritually nourished by the battle." },
+  { name:"Contemplatives", cat:"Soul",      color:"#C8892A", light:"#FFF3DC", desc:"You encounter God through adoration and stillness — gazing lovingly at His face." },
+  { name:"Ascetics",       cat:"Soul",      color:"#C8892A", light:"#FFF3DC", desc:"You encounter God in solitude and simplicity. Stripping away distraction brings you close to Him." },
 ];
 
 const scores = {};
 questions.forEach(q => { if (!scores[q.p]) scores[q.p] = {}; scores[q.p][q.n] = 0; });
 
-// ── RENDER QUESTIONS ──
 const wrap = document.getElementById('questionsWrap');
 questions.forEach((q, i) => {
   const card = document.createElement('div');
   card.className = 'question-card';
-  card.style.animationDelay = `${i * 0.04}s`;
-  card.id = `card-${q.n}`;
-  card.innerHTML = `
-    <div class="q-number">Question ${q.n} of 27</div>
-    <div class="q-text">${q.text}</div>
-    <div class="score-row" id="row-${q.n}">
-      ${[1,2,3,4,5].map(v => `
-        <button class="score-btn" data-q="${q.n}" data-v="${v}" onclick="select(${q.n}, ${v}, '${q.p}')">${v}</button>
-      `).join('')}
-    </div>
-    <div class="score-labels"><span>Not at all</span><span>Very true</span></div>
-  `;
+  card.style.animationDelay = i * 0.04 + 's';
+  card.id = 'card-' + q.n;
+  let btns = '';
+  for(let v=1; v<=5; v++) {
+    btns += '<button class="score-btn" data-q="' + q.n + '" data-v="' + v + '" onclick="select(' + q.n + ', ' + v + ', \'' + q.p + '\')">' + v + '</button>';
+  }
+  card.innerHTML = '<div class="q-number">Question ' + q.n + ' of 27</div><div class="q-text">' + q.text + '</div><div class="score-row">' + btns + '</div><div class="score-labels"><span>Not at all</span><span>Very true</span></div>';
   wrap.appendChild(card);
 });
 
-// ── SELECT ──
 function select(qn, val, pathway) {
-  // update UI
-  document.querySelectorAll(`[data-q="${qn}"]`).forEach(btn => {
+  document.querySelectorAll('[data-q="' + qn + '"]').forEach(btn => {
     btn.classList.toggle('selected', parseInt(btn.dataset.v) === val);
   });
-  document.getElementById(`card-${qn}`).classList.add('answered');
+  document.getElementById('card-' + qn).classList.add('answered');
   scores[pathway][qn] = val;
   updateProgress();
 }
@@ -549,7 +541,7 @@ function updateProgress() {
   questions.forEach(q => { if (scores[q.p][q.n] > 0) answered++; });
   const pct = Math.round(answered / 27 * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `${answered} of 27 answered`;
+  document.getElementById('progressLabel').textContent = answered + ' of 27 answered';
   const btn = document.getElementById('submitBtn');
   if (answered === 27) {
     btn.classList.add('ready');
@@ -557,9 +549,7 @@ function updateProgress() {
   }
 }
 
-// ── RESULTS ──
 function showResults() {
-  // calculate totals
   const totals = {};
   pathways.forEach(p => {
     totals[p.name] = Object.values(scores[p.name]).reduce((a, b) => a + b, 0);
@@ -569,7 +559,6 @@ function showResults() {
   const winner = sorted[0];
   const max = 15;
 
-  // hide questions
   document.getElementById('questionsWrap').style.display = 'none';
   document.getElementById('submitWrap').style.display = 'none';
   document.getElementById('progressFill').style.width = '100%';
@@ -578,57 +567,68 @@ function showResults() {
   const rw = document.getElementById('resultsWrap');
   rw.classList.add('show');
 
-  rw.innerHTML = `
-    <div class="results-title">Your Spiritual Pathway</div>
-    <div class="results-subtitle">Based on Sacred Pathways by Gary Thomas</div>
+  rw.innerHTML = '<div class="results-title">Your Spiritual Pathway</div><div class="results-subtitle">Based on Sacred Pathways by Gary Thomas</div><div class="winner-card"><div class="winner-label">Your Primary Pathway</div><div class="winner-name">' + winner.name + '</div><div class="winner-cat">' + winner.cat + '</div><div class="winner-desc">' + winner.desc + '</div></div><div class="all-scores-title">All Your Scores</div><div id="scoreRows"></div><div class="notes-row"><div class="note-box" style="background:var(--blue-light)"><h4 style="color:var(--blue)">You are a mixture</h4><p style="color:#444">Most people score high on more than one pathway. Any score of 11 or above is a real strength in you.</p></div><div class="note-box" style="background:var(--gold-light)"><h4 style="color:var(--gold)">Pathways change</h4><p style="color:#444">How you connect with God may shift over time. This is a starting point, not a permanent label.</p></div></div><div style="display:flex;gap:12px;justify-content:center;margin:24px 0;"><button class="retry-btn" onclick="shareResults()">Share Results</button><button class="retry-btn" onclick="saveResults()">Save as PDF</button><button class="retry-btn" onclick="location.reload()">Start Again</button></div>';
 
-    <div class="winner-card">
-      <div class="winner-label">Your Primary Pathway</div>
-      <div class="winner-name">${winner.name}</div>
-      <div class="winner-cat">${winner.cat}</div>
-      <div class="winner-desc">${winner.desc}</div>
-    </div>
-
-    <div class="all-scores-title">All Your Scores</div>
-    <div id="scoreRows"></div>
-
-    <div class="notes-row">
-      <div class="note-box" style="background:var(--blue-light)">
-        <h4 style="color:var(--blue)">You are a mixture</h4>
-        <p style="color:#444">Most people score high on more than one pathway. Any score of 11 or above is a real strength in you.</p>
-      </div>
-      <div class="note-box" style="background:var(--gold-light)">
-        <h4 style="color:var(--gold)">Pathways change</h4>
-        <p style="color:#444">How you connect with God may shift over time. This is a starting point, not a permanent label.</p>
-      </div>
-    </div>
-
-    <button class="retry-btn" onclick="location.reload()">Start Again</button>
-  `;
-
-  // animate score bars
   const rowsWrap = document.getElementById('scoreRows');
   sorted.forEach((p, i) => {
     const score = totals[p.name];
     const pct = Math.round(score / max * 100);
     const row = document.createElement('div');
     row.className = 'score-result-row';
-    row.innerHTML = `
-      <div class="score-result-name">${p.name}</div>
-      <div class="score-result-bar-wrap">
-        <div class="score-result-bar" id="bar-${i}" style="background:${p.color}"></div>
-      </div>
-      <div class="score-result-num">${score}</div>
-      <div class="score-result-cat" style="background:${p.light};color:${p.color}">${p.cat}</div>
-    `;
+    row.innerHTML = '<div class="score-result-name">' + p.name + '</div><div class="score-result-bar-wrap"><div class="score-result-bar" id="bar-' + i + '" style="background:' + p.color + '"></div></div><div class="score-result-num">' + score + '</div><div class="score-result-cat" style="background:' + p.light + ';color:' + p.color + '">' + p.cat + '</div>';
     rowsWrap.appendChild(row);
     setTimeout(() => {
-      document.getElementById(`bar-${i}`).style.width = pct + '%';
+      document.getElementById('bar-' + i).style.width = pct + '%';
     }, 100 + i * 80);
   });
 
   rw.scrollIntoView({ behavior: 'smooth' });
 }
+
+function shareResults() {
+  const totals = {};
+  pathways.forEach(p => {
+    totals[p.name] = Object.values(scores[p.name]).reduce((a, b) => a + b, 0);
+  });
+  const sorted = [...pathways].sort((a, b) => totals[b.name] - totals[a.name]);
+  const winner = sorted[0];
+  
+  const text = `I discovered my Spiritual Pathway! I'm a ${winner.name}. ${winner.desc} Take the assessment: https://angela1992hk.github.io/Spiritual_Pathway`;
+  
+  if (navigator.share) {
+    navigator.share({
+      title: 'My Spiritual Pathway',
+      text: text,
+      url: 'https://angela1992hk.github.io/Spiritual_Pathway'
+    });
+  } else {
+    alert('Share: ' + text);
+  }
+}
+
+function saveResults() {
+  const totals = {};
+  pathways.forEach(p => {
+    totals[p.name] = Object.values(scores[p.name]).reduce((a, b) => a + b, 0);
+  });
+  const sorted = [...pathways].sort((a, b) => totals[b.name] - totals[a.name]);
+  const winner = sorted[0];
+  
+  let content = 'MY SPIRITUAL PATHWAY RESULTS\n';
+  content += '============================\n\n';
+  content += 'Primary Pathway: ' + winner.name + '\n';
+  content += winner.desc + '\n\n';
+  content += 'All Scores:\n';
+  sorted.forEach(p => {
+    content += p.name + ': ' + totals[p.name] + '\n';
+  });
+  
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+  element.setAttribute('download', 'spiritual-pathway-results.txt');
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
 </script>
-</body>
-</html>
