@@ -1,290 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discover Your Spiritual Pathway</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --blue:       #1F5C8B;
-    --blue-light: #D6E8F7;
-    --gold:       #C8892A;
-    --gold-light: #FFF3DC;
-    --bg:         #F8F6F2;
-    --card:       #FFFFFF;
-    --text:       #1A1A1A;
-    --muted:      #777;
-    --border:     #E0D9CF;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-  
-  .hero { background: var(--blue); padding: 64px 24px 56px; text-align: center; }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 6vw, 52px); color: #fff; margin-bottom: 14px; line-height: 1.15; }
-  .hero p { font-size: 15px; color: rgba(255,255,255,0.65); max-width: 480px; margin: 0 auto 28px; line-height: 1.6; }
-  
-  .scale-legend { display: inline-block; background: rgba(255,255,255,0.1); border-radius: 40px; padding: 12px 24px; }
-  .scale-legend div { font-size: 13px; color: white; margin: 6px 0; }
-  .scale-legend strong { color: #fff; font-weight: 600; }
-  
-  .progress-bar-wrap { max-width: 660px; margin: 0 auto; padding: 20px 24px 0; }
-  .progress-track { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
-  .progress-label { font-size: 12px; color: var(--muted); text-align: right; margin-top: 6px; }
-  
-  .questions-wrap { max-width: 660px; margin: 0 auto; padding: 28px 24px 40px; }
-  .question-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
-  .q-number { font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .q-text { font-size: 16px; line-height: 1.6; color: var(--text); margin-bottom: 20px; font-family: 'Playfair Display', serif; font-weight: 400; }
-  
-  .score-row { display: flex; gap: 8px; margin-bottom: 12px; }
-  .score-btn { flex: 1; height: 44px; border: 2px solid var(--border); background: transparent; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.15s ease; }
-  .score-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
-  .score-btn.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
-  
-  .score-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
-  
-  .submit-wrap { max-width: 660px; margin: 0 auto; padding: 0 24px 60px; text-align: center; }
-  .submit-btn { background: var(--blue); color: #fff; border: none; padding: 14px 44px; border-radius: 50px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; opacity: 0.4; pointer-events: none; }
-  .submit-btn.ready { opacity: 1; pointer-events: all; }
-  .submit-btn.ready:hover { background: #174d78; }
-  
-  .results-wrap { display: none; max-width: 660px; margin: 0 auto; padding: 28px 24px 60px; }
-  .results-wrap.show { display: block; }
-  .results-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--blue); text-align: center; margin-bottom: 8px; }
-  .results-subtitle { text-align: center; font-size: 14px; color: var(--muted); margin-bottom: 28px; }
-  
-  .winner-card { background: var(--blue); border-radius: 20px; padding: 32px; color: #fff; text-align: center; margin-bottom: 32px; }
-  .winner-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
-  .winner-name { font-family: 'Playfair Display', serif; font-size: 36px; color: #fff; margin-bottom: 12px; }
-  .winner-desc { font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.6; }
-  
-  .all-scores-title { font-size: 13px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-  .score-result-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .score-result-name { font-size: 14px; font-weight: 500; min-width: 140px; }
-  .score-result-bar-wrap { flex: 1; height: 10px; background: var(--border); border-radius: 10px; overflow: hidden; }
-  .score-result-bar { height: 100%; border-radius: 10px; transition: width 0.8s cubic-bezier(.16,1,.3,1); }
-  .score-result-num { font-size: 14px; font-weight: 500; min-width: 30px; text-align: right; }
-  
-  .button-group { display: flex; gap: 12px; justify-content: center; margin: 32px 0; flex-wrap: wrap; }
-  .action-btn { background: transparent; border: 2px solid var(--blue); color: var(--blue); padding: 12px 28px; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-  .action-btn:hover { background: var(--blue); color: #fff; }
-  
-  @media (max-width: 480px) {
-    .button-group { flex-direction: column; }
-    .action-btn { width: 100%; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual Pathway Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Sans&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: DM Sans; background: #f5f5f5; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #1F5C8B; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .question { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #1F5C8B; }
+        .question p { margin: 0 0 15px 0; font-size: 16px; }
+        input[type="range"] { width: 100%; }
+        button { background: #1F5C8B; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #154a6b; }
+        #results { display: none; background: white; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .score-bar { background: #e0e0e0; height: 20px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
+        .score-fill { background: #1F5C8B; height: 100%; transition: width 0.3s; }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Spiritual Pathway Assessment</h1>
+        <div id="questions"></div>
+        <button onclick="submitAssessment()">See My Results</button>
+        <div id="results"></div>
+        <div id="buttons" style="display:none;">
+            <button onclick="shareResults()">Share Results</button>
+            <button onclick="saveResults()">Save Results</button>
+            <button onclick="location.reload()">Start Again</button>
+        </div>
+    </div>
 
-<div class="hero">
-  <div style="font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 16px;">Sacred Pathways · Gary Thomas</div>
-  <h1>Discover Your<br>Spiritual Pathway</h1>
-  <p>How did God wire you to connect with Him?<br>27 honest questions. No right answers.</p>
-  <div class="scale-legend">
-    <div><strong>1</strong> = Not true at all</div>
-    <div><strong>3</strong> = Somewhat true</div>
-    <div><strong>5</strong> = Very true</div>
-  </div>
-</div>
+    <script>
+        const questions = [
+            { id: 1, pathway: "Naturalists", text: "I feel closest to God when I am outside — in the mountains, forests, or by the ocean." },
+            { id: 2, pathway: "Enthusiasts", text: "I feel closest to God when I am celebrating Him with energy and joy." },
+            { id: 3, pathway: "Traditionalists", text: "I feel closest to God through familiar rituals, symbols, and traditions." },
+            { id: 4, pathway: "Activists", text: "I feel closest to God when I am standing up for what is right." },
+            { id: 5, pathway: "Ascetics", text: "I feel closest to God when everything is stripped away — silence and simplicity." },
+            { id: 6, pathway: "Sensates", text: "I feel closest to God in worship that is rich and beautiful." },
+            { id: 7, pathway: "Intellectuals", text: "I feel closest to God when I learn something new about Him." },
+            { id: 8, pathway: "Caregivers", text: "I feel closest to God when I am helping someone in need." },
+            { id: 9, pathway: "Contemplatives", text: "I feel closest to God when I am alone and quiet." },
+            { id: 10, pathway: "Enthusiasts", text: "I believe God is exciting and I expect Him to show up." },
+            { id: 11, pathway: "Naturalists", text: "Being stuck indoors makes me feel distant from God." },
+            { id: 12, pathway: "Caregivers", text: "I see God in the faces of people who are hurting." },
+            { id: 13, pathway: "Intellectuals", text: "I get frustrated when church is all feelings and emotion." },
+            { id: 14, pathway: "Ascetics", text: "Fasting and solitude feel natural to draw near to God." },
+            { id: 15, pathway: "Sensates", text: "I find it hard to worship in a plain or empty space." },
+            { id: 16, pathway: "Activists", text: "I get frustrated when Christians do nothing about suffering." },
+            { id: 17, pathway: "Traditionalists", text: "Structure and rhythm in worship help me go deeper." },
+            { id: 18, pathway: "Contemplatives", text: "Hard times are when I cannot feel God's love." },
+            { id: 19, pathway: "Contemplatives", text: "I love spending time with God just being with Him." },
+            { id: 20, pathway: "Traditionalists", text: "I value the history and traditions of Christian faith." },
+            { id: 21, pathway: "Enthusiasts", text: "I find it confusing when Christians seem cold in worship." },
+            { id: 22, pathway: "Naturalists", text: "The beauty of nature moves my heart toward God." },
+            { id: 23, pathway: "Caregivers", text: "I get restless when not doing something practical to help." },
+            { id: 24, pathway: "Ascetics", text: "I am more drawn to a quiet, simple faith." },
+            { id: 25, pathway: "Sensates", text: "Candles, incense, or music help me focus on God." },
+            { id: 26, pathway: "Activists", text: "Taking action for God's kingdom feels natural to me." },
+            { id: 27, pathway: "Intellectuals", text: "I love reading, studying, and thinking deeply about faith." }
+        ];
 
-<div class="progress-bar-wrap">
-  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="progress-label" id="progressLabel">0 of 27 answered</div>
-</div>
+        const pathways = {
+            "Naturalists": "You encounter God most powerfully through creation and the outdoors.",
+            "Sensates": "You encounter God through beauty, art, and the senses.",
+            "Enthusiasts": "You encounter God through celebration, joy, and expectancy.",
+            "Intellectuals": "You encounter God when your mind is awakened.",
+            "Traditionalists": "You encounter God through ritual and sacred rhythms.",
+            "Caregivers": "You encounter God by loving and serving others.",
+            "Activists": "You encounter God through action and justice.",
+            "Contemplatives": "You encounter God through adoration and stillness.",
+            "Ascetics": "You encounter God in solitude and simplicity."
+        };
 
-<div class="questions-wrap" id="questionsWrap"></div>
+        let scores = {};
+        Object.keys(pathways).forEach(p => scores[p] = 0);
 
-<div class="submit-wrap" id="submitWrap">
-  <button class="submit-btn" id="submitBtn" onclick="showResults()">See My Results</button>
-  <p style="font-size: 13px; color: var(--muted); margin-top: 10px; font-style: italic;">Answer all 27 to unlock your results</p>
-</div>
+        // Render questions
+        const container = document.getElementById('questions');
+        questions.forEach(q => {
+            const div = document.createElement('div');
+            div.className = 'question';
+            div.innerHTML = `
+                <p><strong>Q${q.id}:</strong> ${q.text}</p>
+                <label>Not true (1)<input type="range" min="1" max="5" value="3" data-pathway="${q.pathway}" onchange="updateScore(this)">Very true (5)</label>
+            `;
+            container.appendChild(div);
+        });
 
-<div class="results-wrap" id="resultsWrap"></div>
+        function updateScore(slider) {
+            const pathway = slider.dataset.pathway;
+            scores[pathway] += parseInt(slider.value);
+        }
 
-<script>
-const questions = [
-  {n:1, p:"Naturalists", text:"I feel closest to God when I am outside — in the mountains, forests, or by the ocean."},
-  {n:2, p:"Enthusiasts", text:"I feel closest to God when I am celebrating Him with energy and joy."},
-  {n:3, p:"Traditionalists", text:"I feel closest to God through familiar rituals, symbols, and traditions."},
-  {n:4, p:"Activists", text:"I feel closest to God when I am standing up for what is right."},
-  {n:5, p:"Ascetics", text:"I feel closest to God when everything is stripped away — silence and simplicity."},
-  {n:6, p:"Sensates", text:"I feel closest to God in worship that is rich and beautiful."},
-  {n:7, p:"Intellectuals", text:"I feel closest to God when I learn something new about Him."},
-  {n:8, p:"Caregivers", text:"I feel closest to God when I am helping someone in need."},
-  {n:9, p:"Contemplatives", text:"I feel closest to God when I am alone and quiet."},
-  {n:10, p:"Enthusiasts", text:"I believe God is exciting and I expect Him to show up and move in real ways."},
-  {n:11, p:"Naturalists", text:"Being stuck indoors makes me feel distant from God."},
-  {n:12, p:"Caregivers", text:"I see God in the faces of people who are hurting."},
-  {n:13, p:"Intellectuals", text:"I get frustrated when church is all feelings and emotion."},
-  {n:14, p:"Ascetics", text:"Fasting and solitude feel natural to draw near to God."},
-  {n:15, p:"Sensates", text:"I find it hard to worship in a plain or empty space."},
-  {n:16, p:"Activists", text:"I get frustrated when Christians do nothing about suffering."},
-  {n:17, p:"Traditionalists", text:"Structure and rhythm in worship help me go deeper."},
-  {n:18, p:"Contemplatives", text:"Hard times are when I cannot feel God's love."},
-  {n:19, p:"Contemplatives", text:"I love spending time with God just being with Him."},
-  {n:20, p:"Traditionalists", text:"I value the history and traditions of Christian faith."},
-  {n:21, p:"Enthusiasts", text:"I find it confusing when Christians seem cold in worship."},
-  {n:22, p:"Naturalists", text:"The beauty of nature moves my heart toward God."},
-  {n:23, p:"Caregivers", text:"I get restless when not doing something practical to help."},
-  {n:24, p:"Ascetics", text:"I am more drawn to a quiet, simple faith."},
-  {n:25, p:"Sensates", text:"Candles, incense, or music help me focus on God."},
-  {n:26, p:"Activists", text:"Taking action for God's kingdom feels natural to me."},
-  {n:27, p:"Intellectuals", text:"I love reading, studying, and thinking deeply about faith."}
-];
+        function submitAssessment() {
+            // Reset and recalculate
+            Object.keys(scores).forEach(p => scores[p] = 0);
+            document.querySelectorAll('input[type="range"]').forEach(slider => {
+                const pathway = slider.dataset.pathway;
+                scores[pathway] += parseInt(slider.value);
+            });
 
-const pathways = [
-  {name:"Naturalists", color:"#1F5C8B", desc:"You encounter God most powerfully through creation and the outdoors. Nature is your cathedral."},
-  {name:"Sensates", color:"#1F5C8B", desc:"You encounter God through beauty, art, and the senses."},
-  {name:"Enthusiasts", color:"#1F5C8B", desc:"You encounter God through celebration, joy, and expectancy."},
-  {name:"Intellectuals", color:"#1E6B3C", desc:"You encounter God when your mind is awakened and you learn."},
-  {name:"Traditionalists", color:"#1E6B3C", desc:"You encounter God through ritual, symbol, and sacred rhythms."},
-  {name:"Caregivers", color:"#7B3F6E", desc:"You encounter God by loving and serving others in need."},
-  {name:"Activists", color:"#7B3F6E", desc:"You encounter God through action and fighting for justice."},
-  {name:"Contemplatives", color:"#C8892A", desc:"You encounter God through adoration and stillness."},
-  {name:"Ascetics", color:"#C8892A", desc:"You encounter God in solitude and simplicity."}
-];
+            // Find top pathway
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const winner = sorted[0][0];
 
-const scores = {};
-questions.forEach(q => {
-  if (!scores[q.p]) scores[q.p] = {};
-  scores[q.p][q.n] = 0;
-});
+            // Show results
+            let html = '<h2>Your Spiritual Pathway: <strong>' + winner + '</strong></h2>';
+            html += '<p>' + pathways[winner] + '</p>';
+            html += '<h3>All Scores:</h3>';
+            sorted.forEach(([name, score]) => {
+                const pct = (score / 135) * 100;
+                html += '<div><strong>' + name + ':</strong> ' + score + '<div class="score-bar"><div class="score-fill" style="width:' + pct + '%"></div></div></div>';
+            });
 
-const wrap = document.getElementById('questionsWrap');
-questions.forEach((q, i) => {
-  const card = document.createElement('div');
-  card.className = 'question-card';
-  card.style.animationDelay = (i * 0.04) + 's';
-  card.id = 'card-' + q.n;
-  
-  let btns = '';
-  for (let v = 1; v <= 5; v++) {
-    btns += '<button class="score-btn" data-q="' + q.n + '" data-v="' + v + '" onclick="select(' + q.n + ', ' + v + ', \'' + q.p + '\')">' + v + '</button>';
-  }
-  
-  card.innerHTML = '<div class="q-number">Question ' + q.n + ' of 27</div>' +
-                   '<div class="q-text">' + q.text + '</div>' +
-                   '<div class="score-row">' + btns + '</div>' +
-                   '<div class="score-labels"><span>Not at all</span><span>Very true</span></div>';
-  
-  wrap.appendChild(card);
-});
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').innerHTML = html;
+            document.getElementById('buttons').style.display = 'block';
+            document.getElementById('questions').style.display = 'none';
+            document.querySelectorAll('button')[0].style.display = 'none';
+        }
 
-function select(qn, val, pathway) {
-  document.querySelectorAll('[data-q="' + qn + '"]').forEach(btn => {
-    btn.classList.remove('selected');
-  });
-  event.target.classList.add('selected');
-  scores[pathway][qn] = val;
-  document.getElementById('card-' + qn).style.borderColor = '#1F5C8B';
-  updateProgress();
-}
+        function shareResults() {
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const text = "I'm a " + sorted[0][0] + "! " + pathways[sorted[0][0]] + " https://angela1992hk.github.io/Spiritual_Pathway";
+            if (navigator.share) {
+                navigator.share({ title: "My Spiritual Pathway", text: text });
+            } else {
+                alert("Copy to share:\n\n" + text);
+            }
+        }
 
-function updateProgress() {
-  let answered = 0;
-  questions.forEach(q => {
-    if (scores[q.p][q.n] > 0) answered++;
-  });
-  const pct = Math.round(answered / 27 * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = answered + ' of 27 answered';
-  
-  if (answered === 27) {
-    document.getElementById('submitBtn').classList.add('ready');
-  }
-}
+        function saveResults() {
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            let content = "SPIRITUAL PATHWAY RESULTS\n\n";
+            content += "Primary: " + sorted[0][0] + "\n";
+            content += pathways[sorted[0][0]] + "\n\n";
+            content += "All Scores:\n";
+            sorted.forEach(([name, score]) => {
+                content += name + ": " + score + "\n";
+            });
 
-function showResults() {
-  const totals = {};
-  pathways.forEach(p => {
-    totals[p.name] = Object.values(scores[p.name]).reduce((a, b) => a + b, 0);
-  });
-
-  const sorted = [...pathways].sort((a, b) => totals[b.name] - totals[a.name]);
-  const winner = sorted[0];
-
-  document.getElementById('questionsWrap').style.display = 'none';
-  document.getElementById('submitWrap').style.display = 'none';
-  
-  const rw = document.getElementById('resultsWrap');
-  rw.classList.add('show');
-
-  let html = '<div class="results-title">Your Spiritual Pathway</div>' +
-             '<div class="results-subtitle">Based on Sacred Pathways by Gary Thomas</div>' +
-             '<div class="winner-card">' +
-             '<div class="winner-label">Your Primary Pathway</div>' +
-             '<div class="winner-name">' + winner.name + '</div>' +
-             '<div class="winner-desc">' + winner.desc + '</div>' +
-             '</div>' +
-             '<div class="all-scores-title">All Your Scores</div>' +
-             '<div id="scoreRows"></div>' +
-             '<div class="button-group">' +
-             '<button class="action-btn" onclick="shareResults()">Share Results</button>' +
-             '<button class="action-btn" onclick="saveResults()">Save Results</button>' +
-             '<button class="action-btn" onclick="location.reload()">Start Again</button>' +
-             '</div>';
-
-  rw.innerHTML = html;
-
-  const rowsWrap = document.getElementById('scoreRows');
-  sorted.forEach((p, i) => {
-    const score = totals[p.name];
-    const pct = Math.round(score / 15 * 100);
-    const row = document.createElement('div');
-    row.className = 'score-result-row';
-    row.innerHTML = '<div class="score-result-name">' + p.name + '</div>' +
-                    '<div class="score-result-bar-wrap"><div class="score-result-bar" id="bar-' + i + '" style="background:' + p.color + '"></div></div>' +
-                    '<div class="score-result-num">' + score + '</div>';
-    rowsWrap.appendChild(row);
-    
-    setTimeout(() => {
-      document.getElementById('bar-' + i).style.width = pct + '%';
-    }, 100 + i * 80);
-  });
-
-  rw.scrollIntoView({ behavior: 'smooth' });
-}
-
-function shareResults() {
-  const totals = {};
-  pathways.forEach(p => {
-    totals[p.name] = Object.values(scores[p.name]).reduce((a, b) => a + b, 0);
-  });
-  const sorted = [...pathways].sort((a, b) => totals[b.name] - totals[a.name]);
-  const text = 'I discovered my Spiritual Pathway! I am a ' + sorted[0].name + '. ' + sorted[0].desc + ' Take the assessment: https://angela1992hk.github.io/Spiritual_Pathway';
-  
-  if (navigator.share) {
-    navigator.share({ title: 'My Spiritual Pathway', text: text });
-  } else {
-    alert('Copy to share:\n\n' + text);
-  }
-}
-
-function saveResults() {
-  const totals = {};
-  pathways.forEach(p => {
-    totals[p.name] = Object.values(scores[p.name]).reduce((a, b) => a + b, 0);
-  });
-  const sorted = [...pathways].sort((a, b) => totals[b.name] - totals[a.name]);
-  
-  let content = 'MY SPIRITUAL PATHWAY RESULTS\n';
-  content += '============================\n\n';
-  content += 'Primary Pathway: ' + sorted[0].name + '\n\n';
-  content += sorted[0].desc + '\n\n';
-  content += 'All Scores:\n';
-  sorted.forEach(p => {
-    content += p.name + ': ' + totals[p.name] + '\n';
-  });
-  
-  const el = document.createElement('a');
-  el.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
-  el.download = 'spiritual-pathway-results.txt';
-  el.click();
-}
-</script>
-
+            const el = document.createElement('a');
+            el.href = 'data:text/plain,' + encodeURIComponent(content);
+            el.download = 'spiritual-pathway.txt';
+            el.click();
+        }
+    </script>
 </body>
 </html>
