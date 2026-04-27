@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Spiritual Pathway</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --heart:        #1F5C8B;
+    --heart-light:  #EBF4FC;
+    --mind:         #1E6B3C;
+    --mind-light:   #EAF5EE;
+    --strength:     #7B3F6E;
+    --strength-light:#F7EEF5;
+    --soul:         #B5720A;
+    --soul-light:   #FEF6E7;
+    --dark:         #1A1A1A;
+    --muted:        #666;
+    --border:       #E5DDD5;
+    --bg:           #FAF8F5;
+    --card:         #FFFFFF;
+    --gold:         #C8892A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--heart);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(200,137,42,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 10%, rgba(255,255,255,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(28px, 6vw, 46px);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 500px;
+    margin: 0 auto 28px;
+    line-height: 1.65;
+  }
+  .hero-verse {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 40px;
+    padding: 10px 22px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+  }
+
+  /* ── CATEGORY TABS ── */
+  .cat-nav {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cat-nav::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 16px 12px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .cat-btn.active { color: var(--active-color); border-bottom-color: var(--active-color); }
+  .cat-btn:hover  { color: var(--active-color); }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ── CATEGORY HEADER ── */
+  .cat-header {
+    display: none;
+    margin-bottom: 32px;
+    padding: 28px 28px 24px;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-header.visible { display: block; }
+  .cat-header::before {
+    content: attr(data-emoji);
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    font-size: 52px;
+    opacity: 0.15;
+  }
+  .cat-header h2 {
+    font-family: 'Lora', serif;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+  .cat-header .cat-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 10px;
+  }
+  .cat-header p {
+    font-size: 14px;
+    line-height: 1.65;
+    opacity: 0.85;
+    max-width: 560px;
+  }
+
+  /* ── PATHWAY CARD ── */
+  .pathway-section {
+    display: none;
+  }
+  .pathway-section.visible { display: block; }
+
+  .pathway-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .pathway-card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  .card-header {
+    padding: 22px 24px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    user-select: none;
+  }
+  .card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .card-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .card-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-style: italic;
+  }
+  .chevron {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .pathway-card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+  .pathway-card.open .card-body { display: block; }
+
+  /* ── SECTIONS inside card ── */
+  .section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .section p, .section li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .section ul {
+    padding-left: 18px;
+  }
+  .section li { margin-bottom: 6px; }
+  .section li:last-child { margin-bottom: 0; }
+
+  /* challenge boxes */
+  .challenge-box {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 12px;
+  }
+  .challenge-box h4 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .challenge-box p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .warning-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .warning-item:last-child { margin-bottom: 0; }
+  .warning-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+  .warning-text { font-size: 14px; line-height: 1.65; color: #5a2a2a; }
+  .warning-title { font-weight: 600; }
+
+  /* ── BACK TO TOP ── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: var(--heart);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(31,92,139,0.3);
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .back-top.show { opacity: 1; pointer-events: all; }
+  .back-top:hover { transform: translateY(-2px); }
+
+  /* ── HEART colours ── */
+  .heart .card-num        { background: var(--heart); }
+  .heart .cat-header      { background: var(--heart-light); color: var(--heart); }
+  .heart .section-label   { color: var(--heart); }
+  .heart .section-label .dot { background: var(--heart); }
+  .heart .challenge-box   { background: var(--heart-light); }
+  .heart .challenge-box h4{ color: var(--heart); }
+
+  /* ── MIND colours ── */
+  .mind .card-num        { background: var(--mind); }
+  .mind .cat-header      { background: var(--mind-light); color: var(--mind); }
+  .mind .section-label   { color: var(--mind); }
+  .mind .section-label .dot { background: var(--mind); }
+  .mind .challenge-box   { background: var(--mind-light); }
+  .mind .challenge-box h4{ color: var(--mind); }
+
+  /* ── STRENGTH colours ── */
+  .strength .card-num        { background: var(--strength); }
+  .strength .cat-header      { background: var(--strength-light); color: var(--strength); }
+  .strength .section-label   { color: var(--strength); }
+  .strength .section-label .dot { background: var(--strength); }
+  .strength .challenge-box   { background: var(--strength-light); }
+  .strength .challenge-box h4{ color: var(--strength); }
+
+  /* ── SOUL colours ── */
+  .soul .card-num        { background: var(--soul); }
+  .soul .cat-header      { background: var(--soul-light); color: var(--soul); }
+  .soul .section-label   { color: var(--soul); }
+  .soul .section-label .dot { background: var(--soul); }
+  .soul .challenge-box   { background: var(--soul-light); }
+  .soul .challenge-box h4{ color: var(--soul); }
+
+  @media (max-width: 480px) {
+    .hero { padding: 40px 16px 36px; }
+    .section { padding: 16px 18px; }
+    .card-header { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Sacred Pathways · Gary Thomas</div>
+  <h1>My Spiritual Pathway</h1>
+  <p>How did God wire you to connect with Him? Come back here anytime to read about your pathway and remember how to live it out.</p>
+  <div class="hero-verse">"Love the Lord your God with all your heart, soul, mind, and strength."  — Mark 12:30</div>
+</div>
+
+<!-- Category nav -->
+<nav class="cat-nav">
+  <button class="cat-btn active" style="--active-color: var(--heart)"  onclick="showCat('heart',   this)">❤ Heart</button>
+  <button class="cat-btn"        style="--active-color: var(--mind)"   onclick="showCat('mind',    this)">💡 Mind</button>
+  <button class="cat-btn"        style="--active-color: var(--strength)"onclick="showCat('strength',this)">💪 Strength</button>
+  <button class="cat-btn"        style="--active-color: var(--soul)"   onclick="showCat('soul',    this)">🔥 Soul</button>
+</nav>
+
+<div class="main">
+
+<!-- ════════════════════════════════════
+     ❤  HEART
+════════════════════════════════════ -->
+<div id="cat-heart" class="pathway-section visible heart">
+  <div class="cat-header visible heart" data-emoji="❤">
+    <div class="cat-tag">❤  Heart — Mark 12:30</div>
+    <h2>Love God with all your Heart</h2>
+    <p>These pathways connect with God through adoration, emotion, and deep personal love. You feel God most when something moves you from the inside — through celebration, beauty, or quiet intimacy.</p>
+  </div>
+
+  <!-- Enthusiasts -->
+  <div class="pathway-card heart" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">1</div>
+        <div>
+          <div class="card-title">Enthusiasts</div>
+          <div class="card-subtitle">Loves God through celebration and joy</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>An Enthusiast loves God through joyful celebration and openness to the supernatural. They worship with energy and expectancy — expecting God to move, speak, and respond. They see something others sometimes miss: a thin veil between the everyday world and the presence of God. They live right at that edge.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel God most when they are celebrating Him — singing loudly, lifting their hands, feeling excited about His presence. Large worship gatherings energise them. They often get chills when God's presence is near, or are moved to tears when people praise together. They expect God to still do miracles today.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p>Celebration has a wide background in Scripture. We worship a supernatural God who manifests Himself in supernatural ways. <strong>Acts 2:17</strong> — God promises to pour out His Spirit; sons and daughters will prophesy, young men will see visions. <strong>Deuteronomy 18:10-12</strong> — a warning that all spiritual experience must be tested against God's Word.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Seeking experiences for their own sake</span> — remain true to seeking God rather than new feelings. Feelings come and go.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Being independent</span> — Enthusiasts need a strong church community to help interpret their encounters with God. Don't go alone.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Equating good feelings with good worship</span> — a powerful emotional experience is not the same as genuine faith. Test everything against Scripture.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box heart">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Plan one time with God this week full of celebration. Put on worship music, sing out loud, tell God what you love about Him. Don't hold back. Afterwards ask yourself: was I pursuing God, or just the feeling?</p>
+        </div>
+        <div class="challenge-box heart" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Invite a friend to a moment of worship together. Play one worship song. Ask them afterwards: "Did you feel anything? Was God close?" Start a conversation about how God still moves today.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contemplatives -->
+  <div class="pathway-card heart" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">2</div>
+        <div>
+          <div class="card-title">Contemplatives</div>
+          <div class="card-subtitle">Loves God through adoration and stillness</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>A Contemplative loves God through adoration — sitting quietly in His presence, gazing at His face, giving Him personal love and devotion. Gary Thomas says: only you can give God this personal love and affection. Your pastor, your friend — they cannot do this for you. It is uniquely yours to give.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel closest to God in quiet, unhurried moments alone with Him — not asking for anything, just being present. They have a rich inner prayer life. The hardest times in their faith are when they cannot feel God's closeness. They talk to God like a close friend.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>Deuteronomy 7:7-8</strong> — God seeks a passionate love that burns all other bonds. <strong>Psalm 63</strong> — soul thirsting for God like dry land. <strong>Mary of Bethany (Luke 10)</strong> — sat at Jesus' feet and simply listened. Jesus said she chose the better thing.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Losing balance</span> — love for God must not cause you to forget your neighbour or withdraw from community.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Creating a vacuum</span> — a Christian wants to be filled with the Holy Spirit, not emptied out. Be careful of practices that focus on emptying yourself.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Solitude vs isolation</span> — solitude runs toward God to connect, then returns. Isolation runs away from life. They are not the same.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box heart">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Carve out 30 minutes with God this week — no agenda. Just sit and tell Him you love Him. Try praying through one Psalm slowly, letting each line become your own prayer.</p>
+        </div>
+        <div class="challenge-box heart" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Invite a friend into a quiet moment with God together. Sit somewhere, turn phones off, spend a few minutes in silence before God. Then share one thing you felt or heard.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     💡  MIND
+════════════════════════════════════ -->
+<div id="cat-mind" class="pathway-section mind" style="display:none">
+  <div class="cat-header mind" data-emoji="💡" style="display:block">
+    <div class="cat-tag">💡  Mind — Mark 12:30</div>
+    <h2>Love God with all your Mind</h2>
+    <p>These pathways connect with God through understanding, truth, and structure. You feel God most when faith is grounded and meaningful — through deep study or through sacred rhythm and order.</p>
+  </div>
+
+  <!-- Intellectuals -->
+  <div class="pathway-card mind" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">3</div>
+        <div>
+          <div class="card-title">Intellectuals</div>
+          <div class="card-subtitle">Loves God through learning and truth</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>An Intellectual loves God with the mind. When they learn something new about God, their adoration is unlocked. A stagnant mind feels like a stagnant relationship with God. Their phrase is: <em>let me think.</em></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel alive when studying Scripture, wrestling with hard questions, or understanding something they never understood before. They thrive in good discussions about faith. They love the library, commentaries, church history — anything that stretches their understanding of God.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>Proverbs 1:5-7</strong> — let the wise listen and add to their learning; the fear of the Lord is the beginning of wisdom. <strong>Psalm 49:1-4</strong> — the pursuit of wisdom and understanding. Thomas notes: right thinking enables right living. The early church out-thought the pagan world.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Loving controversy</span> — arguing to win rather than to love is not godly (1 Timothy 6:4-5). Check the motive behind every debate.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Knowing rather than doing</span> — knowledge is not a substitute for obedience (James 1:22). The wise person applies what they study.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Pride</span> — the quiet desire to correct virtually everyone. Guard against it.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box mind">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Choose one passage of Scripture this week and sit with it for a long time. Don't rush. Ask questions of it, write down what you discover. Let your mind be fully engaged with God's Word — and let that engagement become worship.</p>
+        </div>
+        <div class="challenge-box mind" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Share one thing you are learning about God with a friend this week. Not to impress — to invite them into the discovery. Ask: "What do you think? Does this change anything for you?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Traditionalists -->
+  <div class="pathway-card mind" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">4</div>
+        <div>
+          <div class="card-title">Traditionalists</div>
+          <div class="card-subtitle">Loves God through ritual and symbol</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>A Traditionalist loves God through ritual, symbol, and the sacred rhythms of Christian practice. Thomas says: memory and repetition have the ability to bring us closer to God. Traditions are like old friends that take us back to where we have been with God.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel closest to God through familiar practices — Communion, the Lord's Prayer, the church calendar, written prayers. Something happens in them when they take the bread and cup that feels deeply real. Structure and rhythm in worship help them go deeper, not shallower.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>Abraham and Moses</strong> — built altars to express their faith. <strong>Peter and John</strong> — observed regular, set times of prayer. <strong>Paul</strong> — willingly underwent purification rituals. <strong>Amos 5:21-24</strong> — religion must have substance. <strong>Colossians 2:16-17</strong> — do not use ritual to judge others.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Serving God without knowing God</span> — religion can serve faith but can never replace it. The tradition is a photograph; it points to something real but is not the real thing.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Judging others</span> — do not let your practices become a way of judging those who worship differently (Col. 2:16-17).</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Repeating mechanically</span> — without attention, ritual becomes hollow. Bring your heart every time.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box mind">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Pray through a Psalm this week as if it were your own prayer. Read it slowly. Or try the Lord's Prayer — stop at each line and really mean it. Let memory and repetition draw you close to God.</p>
+        </div>
+        <div class="challenge-box mind" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Invite a friend to take Communion with you, or pray a simple prayer together out loud. Share what that moment means to you. Let the tradition open a conversation about faith.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     💪  STRENGTH
+════════════════════════════════════ -->
+<div id="cat-strength" class="pathway-section strength" style="display:none">
+  <div class="cat-header strength" data-emoji="💪" style="display:block">
+    <div class="cat-tag">💪  Strength — Mark 12:30</div>
+    <h2>Love God with all your Strength</h2>
+    <p>These pathways connect with God through the body and outward action. You feel God most when you are doing something that matters — through your senses, your hands, or your fight for justice.</p>
+  </div>
+
+  <!-- Sensates -->
+  <div class="pathway-card strength" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">5</div>
+        <div>
+          <div class="card-title">Sensates</div>
+          <div class="card-subtitle">Loves God through beauty and the senses</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>A Sensate loves God through the five senses — what they see, hear, smell, touch, and taste. Christianity without beauty feels like a disembodied religion of the mind to this person. God is loud and colourful in Scripture, and Sensates connect with that.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel connected to God when the environment is beautiful — good music, art, incense, candles, or something to hold in their hands. A warm cup of coffee while reading the Bible might be the thing that actually helps them focus and feel present with God. The physical world is their doorway.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>Ezekiel (chapters 1 & 3)</strong> — encounters God through wind, lightning, the sound of wings, a scroll that tastes sweet. Sits stunned for 7 days. <strong>John in Revelation</strong> — overwhelmed by trumpet voices, blazing eyes, and rushing waters. God meets people through overwhelming sensory encounters.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Worshipping the experience not God</span> — words can be sung with no more feeling than placing a food order. Always ask: am I meeting God here, or just enjoying the atmosphere?</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Idolising beauty</span> — leaving a beautiful service feeling satisfied without truly entering God's presence. Beauty is a door, not the destination.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Making it about you</span> — if the service not going your way closes you down to God, the senses are serving you, not God.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box strength">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Set up one time with God this week that engages your senses. Light a candle, make a warm drink, play quiet music. Let your senses help you focus — not distract you. Ask: am I meeting God, or just enjoying the experience?</p>
+        </div>
+        <div class="challenge-box strength" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Share a meal with a friend and pray before eating. Really taste the food, smell it, thank God together. Or walk slowly through your church and ask: "What do you see here that reminds you of Jesus?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Caregivers -->
+  <div class="pathway-card strength" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">6</div>
+        <div>
+          <div class="card-title">Caregivers</div>
+          <div class="card-subtitle">Loves God by serving others</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>A Caregiver loves God by loving others in practical, hands-on ways. Serving is not a burden for them — it is a form of worship. Thomas says: caring for others is a prophetic activity — evidence of God's supernatural touch in a person's life.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel God most strongly when helping someone who is sick, poor, or in need. They are the first to notice when someone is struggling. They see Christ in the faces of people who are hurting. Serving fills them up — when they help someone, something inside says: this is right. This is what I am here for.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>The Good Samaritan (Luke 10)</strong> — spiritual concern is no excuse for refusing to get hands dirty. <strong>1 John 3:17</strong> — if you see a brother in need and have no pity, how can God's love be in you? <strong>James 1:27</strong> — pure religion is looking after orphans and widows.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Judging others</span> — Martha judged Mary for sitting at Jesus' feet instead of helping. Caregiving is not a licence to judge those who worship differently.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Serving for self-validation</span> — some serve to be needed or loved in return. When caregiving becomes about us, it stops being worship.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Neglecting those closest to you</span> — God makes home a priority (1 Timothy 5:8). Don't neglect your family while saving the world.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box strength">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Look around your life this week. What need do you see that no one is meeting? Choose one and meet it. Then pray: "God, I did that for You." Check your heart — was it genuine love?</p>
+        </div>
+        <div class="challenge-box strength" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Invite a friend to serve alongside you — visit someone lonely, bring food to someone in need. Do it together and talk after: "What did you feel? Did you sense God there?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activists -->
+  <div class="pathway-card strength" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">7</div>
+        <div>
+          <div class="card-title">Activists</div>
+          <div class="card-subtitle">Loves God through justice and action</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>An Activist loves God by standing up for what is right — defending the weak, fighting injustice, and confronting evil. Thomas says they are spiritually nourished through the battle. The fear of confrontation creates a dependence on God that brings deeper intimacy with Him.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel most alive when standing up for something that matters. They get a righteous anger at injustice — something in them says: this is not right, someone has to do something. Prayer is one of their most powerful weapons. They see God move when they act in faith.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>John 4:34</strong> — Jesus said His food was to do the will of the One who sent Him. <strong>Isaiah 1:16-17</strong> — seek justice, rescue the oppressed, defend the orphan, plead for the widow. <strong>The life of Moses (Exodus)</strong>. <strong>Matthew 25:35-36</strong> — reaching out to the less fortunate.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Becoming judgmental</span> — assuming holiness means less tolerance for sinners. Self-righteousness is not the compassion of Christ.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Ambition and moral failure</span> — ambition plus secrecy plus fatigue is fertile ground for sin. Every Activist needs honest accountability.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Preoccupied with results</span> — leave results to God or you will be driven by success rather than the Holy Spirit's leading.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box strength">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Ask yourself: what issue of injustice stirs my heart most? Spend time this week praying specifically about it — not just talking to God about it, but listening for what He wants you to do. Prayer is battle.</p>
+        </div>
+        <div class="challenge-box strength" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Find one practical act of justice you can do with a friend this week. Speak up for someone, help someone in need. Talk after: "Did that bring you closer to God? What did you feel?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     🔥  SOUL
+════════════════════════════════════ -->
+<div id="cat-soul" class="pathway-section soul" style="display:none">
+  <div class="cat-header soul" data-emoji="🔥" style="display:block">
+    <div class="cat-tag">🔥  Soul — Mark 12:30</div>
+    <h2>Love God with all your Soul</h2>
+    <p>These pathways connect with God through the inner life — prayer, solitude, and what goes beyond words. You feel God most when the noise is stripped away and your deep self can simply be present with Him.</p>
+  </div>
+
+  <!-- Ascetics -->
+  <div class="pathway-card soul" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">8</div>
+        <div>
+          <div class="card-title">Ascetics</div>
+          <div class="card-subtitle">Loves God through solitude and simplicity</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>An Ascetic loves God through solitude, silence, and simplicity — stripping away all noise and distraction so their deep self can be fully present with God. They stress deeds before words. They treat others with supernatural gentleness while being strict with themselves.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel closest to God early in the morning before anyone is awake, or late at night when the world is quiet. They find noisy gatherings draining and need time alone to process and pray. Fasting and simplicity feel natural — not as punishment, but as a way to sharpen focus on God.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>John the Baptist</strong> — lived a solitary, simple life in the wilderness. <strong>Jesus (Mark 1:35; Matthew 26:36)</strong> — fasted 40 days in solitude and rose before dawn to pray alone. <strong>Jesus' teaching</strong> — prayer should be done in secret. <strong>Gethsemane</strong> — Jesus' real battle was fought in solitary prayer.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Overemphasising personal piety</span> — God calls us to justice and mercy, not just inner holiness (Zechariah 7:1-10). Solitude fills you up; you must come back out.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Seeking pain for its own sake</span> — asceticism is a means to see God more clearly, never an end in itself. We do it to position ourselves before God, not to earn His favour.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Being harsh with others</span> — healthy Ascetics treat other people with gentleness and respect. Not everyone feels this calling. Don't look down on those who need beauty or celebration.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box soul">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Choose one small act of simplicity: fast one meal and use that time to pray; put your phone away for one evening; wake up early one morning and sit in silence for 10 minutes. Just you and God.</p>
+        </div>
+        <div class="challenge-box soul" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Invite a friend into a quiet moment with God. Sit outside at night, turn phones off, pray together in silence for a few minutes. Then share one thing you noticed. You don't need words to disciple someone — sometimes the quiet says everything.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Naturalists -->
+  <div class="pathway-card soul" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">9</div>
+        <div>
+          <div class="card-title">Naturalists</div>
+          <div class="card-subtitle">Loves God through creation and the outdoors</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>What is it?</div>
+        <p>A Naturalist loves God outdoors — in creation. Thomas says: while walking through a meadow and watching the sun go down, he realised that regardless of personal pain, financial situation, or circumstances — if he could be outside, he was always a rich man. That is the heart of the Naturalist.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>How they experience God</div>
+        <p>They feel restless when stuck indoors too long. They find it easier to pray walking than sitting. They have had moments outside — watching a sunset, standing by the ocean, sitting under an open sky — when God felt close, real, and present. Creation is their cathedral.</p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Biblical examples</div>
+        <p><strong>Genesis 2</strong> — God's first dwelling with humanity was a garden. <strong>Psalm 19:1</strong> — the heavens declare the glory of God. <strong>Psalm 23:2-3</strong> — green pastures and quiet waters restore the soul. <strong>Romans 1:20</strong> — God's invisible qualities clearly seen through creation. <strong>Jesus (Mark 1:35)</strong> — sought lonely outdoor places to pray.</p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span>Warnings (Gary Thomas)</div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Individualism</span> — Jesus went outside to be refilled, then came back to the people. Don't use creation to escape the duties of following Jesus.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Spiritual delusion</span> — anything you feel or sense outdoors must be tested against Scripture. The Bible is always our final guide.</div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title">Idolising nature</span> — God made creation; He is not creation. Keep your eyes moving past the window, to the One the window reveals.</div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span>Challenges for you this week</div>
+        <div class="challenge-box soul">
+          <h4>🙏 Prayer Devotion</h4>
+          <p>Go outside to pray at least once this week. Take your Bible. Let creation open your heart — talk to God about what you see. Ask: "What does this part of creation tell me about who God is?"</p>
+        </div>
+        <div class="challenge-box soul" style="margin-top:10px">
+          <h4>👣 Discipleship</h4>
+          <p>Invite one person to walk with you. Just walk together. Ask them: "What do you see around you that reminds you of God?" Let creation start the conversation. You don't need a curriculum — just an open sky.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function showCat(cat, btn) {
+  document.querySelectorAll('.pathway-section').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cat-' + cat).style.display = 'block';
+  btn.classList.add('active');
+  window.scrollTo({top: document.querySelector('.cat-nav').offsetTop - 10, behavior: 'smooth'});
+}
+
+function toggleCard(card) {
+  const isOpen = card.classList.contains('open');
+  // Close all in same category
+  card.closest('.pathway-section').querySelectorAll('.pathway-card').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+// Back to top button
+window.addEventListener('scroll', () => {
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 300);
+});
+
+// Auto-open first card in visible section
+document.querySelector('.pathway-card').classList.add('open');
+</script>
+</body>
+</html>
