@@ -20,34 +20,30 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* ── LANGUAGE BAR ── */
-  .lang-bar {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-  }
+  /* ── LANGUAGE TOGGLE (inside hero) ── */
   .lang-btn {
-    padding: 8px 22px;
+    padding: 8px 24px;
     border-radius: 30px;
-    border: 2px solid var(--border);
+    border: 2px solid rgba(255,255,255,0.35);
     background: transparent;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: all 0.15s;
-    color: var(--muted);
+    transition: all 0.2s;
+    color: rgba(255,255,255,0.6);
   }
-  .lang-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
-  .lang-btn:not(.active):hover { border-color: var(--blue); color: var(--blue); }
+  .lang-btn.active {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.9);
+    color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.3);
+  }
+  .lang-btn:not(.active):hover {
+    border-color: rgba(255,255,255,0.65);
+    color: rgba(255,255,255,0.9);
+  }
 
   .hero { background: var(--blue); padding: 64px 24px 56px; text-align: center; }
   .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 6vw, 52px); color: #fff; margin-bottom: 14px; line-height: 1.15; }
@@ -114,8 +110,8 @@
   <div id="heroLabel" style="font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:16px;"></div>
   <!-- LANGUAGE TOGGLE inside hero -->
   <div style="display:flex;justify-content:center;gap:8px;margin-bottom:28px;">
-    <button class="lang-btn active" id="btnEN" onclick="setLang('en')">🇬🇧 English</button>
-    <button class="lang-btn"        id="btnRO" onclick="setLang('ro')">🇷🇴 Română</button>
+    <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN &nbsp;English</button>
+    <button class="lang-btn"        id="btnRO" onclick="setLang('ro')">RO &nbsp;Română</button>
   </div>
   <h1 id="heroH1"></h1>
   <p  id="heroP"></p>
@@ -169,15 +165,15 @@ const T = {
     changeText:   "How you connect with God may shift over time. This is a starting point, not a permanent label.",
     startAgain:   "Start Again",
     pathways: {
-      Naturalists:     { cat:"❤ Heart",     color:"#1F5C8B", desc:"You encounter God most powerfully through creation and the outdoors. Nature is your cathedral." },
-      Sensates:        { cat:"💪 Strength",  color:"#7B3F6E", desc:"You encounter God through beauty, art, and the senses — sight, sound, smell, touch, and taste." },
-      Enthusiasts:     { cat:"❤ Heart",     color:"#1F5C8B", desc:"You encounter God through celebration, joy, and expectancy. You love God with gusto!" },
-      Intellectuals:   { cat:"💡 Mind",     color:"#1E6B3C", desc:"You encounter God when your mind is awakened. Learning something new about God unlocks adoration." },
-      Traditionalists: { cat:"💡 Mind",     color:"#1E6B3C", desc:"You encounter God through ritual, symbol, and the sacred rhythms of Christian practice." },
-      Caregivers:      { cat:"💪 Strength",  color:"#7B3F6E", desc:"You encounter God by loving and serving others. You see Christ in the faces of people who are hurting." },
-      Activists:       { cat:"💪 Strength",  color:"#7B3F6E", desc:"You encounter God through action and justice. You are spiritually nourished by the battle." },
-      Contemplatives:  { cat:"❤ Heart",     color:"#1F5C8B", desc:"You encounter God through adoration and stillness — gazing lovingly at His face." },
-      Ascetics:        { cat:"🔥 Soul",     color:"#C8892A", desc:"You encounter God in solitude and simplicity. Stripping away distraction brings you close to Him." }
+      Naturalists:     { label:"Naturalists",     cat:"❤ Heart",     color:"#1F5C8B", desc:"You encounter God most powerfully through creation and the outdoors. Nature is your cathedral." },
+      Sensates:        { label:"Sensates",         cat:"💪 Strength",  color:"#7B3F6E", desc:"You encounter God through beauty, art, and the senses — sight, sound, smell, touch, and taste." },
+      Enthusiasts:     { label:"Enthusiasts",      cat:"❤ Heart",     color:"#1F5C8B", desc:"You encounter God through celebration, joy, and expectancy. You love God with gusto!" },
+      Intellectuals:   { label:"Intellectuals",    cat:"💡 Mind",     color:"#1E6B3C", desc:"You encounter God when your mind is awakened. Learning something new about God unlocks adoration." },
+      Traditionalists: { label:"Traditionalists",  cat:"💡 Mind",     color:"#1E6B3C", desc:"You encounter God through ritual, symbol, and the sacred rhythms of Christian practice." },
+      Caregivers:      { label:"Caregivers",       cat:"💪 Strength",  color:"#7B3F6E", desc:"You encounter God by loving and serving others. You see Christ in the faces of people who are hurting." },
+      Activists:       { label:"Activists",        cat:"💪 Strength",  color:"#7B3F6E", desc:"You encounter God through action and justice. You are spiritually nourished by the battle." },
+      Contemplatives:  { label:"Contemplatives",   cat:"❤ Heart",     color:"#1F5C8B", desc:"You encounter God through adoration and stillness — gazing lovingly at His face." },
+      Ascetics:        { label:"Ascetics",         cat:"🔥 Soul",     color:"#C8892A", desc:"You encounter God in solitude and simplicity. Stripping away distraction brings you close to Him." }
     },
     questions: [
       "I feel closest to God when I am outside — in the mountains, forests, or by the ocean.",
@@ -232,15 +228,15 @@ const T = {
     changeText:   "Modul în care te conectezi cu Dumnezeu se poate schimba în timp. Acesta este un punct de plecare, nu o etichetă permanentă.",
     startAgain:   "Începe Din Nou",
     pathways: {
-      Naturalists:     { cat:"❤ Inimă",    color:"#1F5C8B", desc:"Te întâlnești cu Dumnezeu cel mai puternic prin creație și natură. Natura este catedrala ta." },
-      Sensates:        { cat:"💪 Putere",   color:"#7B3F6E", desc:"Te întâlnești cu Dumnezeu prin frumusețe, artă și simțuri — vedere, sunet, miros, atingere și gust." },
-      Enthusiasts:     { cat:"❤ Inimă",    color:"#1F5C8B", desc:"Te întâlnești cu Dumnezeu prin celebrare, bucurie și așteptare. Îl iubești pe Dumnezeu cu entuziasm!" },
-      Intellectuals:   { cat:"💡 Minte",   color:"#1E6B3C", desc:"Te întâlnești cu Dumnezeu când mintea ta este trezită. A învăța ceva nou despre Dumnezeu îți eliberează adorarea." },
-      Traditionalists: { cat:"💡 Minte",   color:"#1E6B3C", desc:"Te întâlnești cu Dumnezeu prin ritual, simbol și ritmurile sacre ale practicii creștine." },
-      Caregivers:      { cat:"💪 Putere",   color:"#7B3F6E", desc:"Te întâlnești cu Dumnezeu iubind și slujind altora. Îl vezi pe Hristos în fețele celor care suferă." },
-      Activists:       { cat:"💪 Putere",   color:"#7B3F6E", desc:"Te întâlnești cu Dumnezeu prin acțiune și dreptate. Ești hrănit spiritual prin luptă." },
-      Contemplatives:  { cat:"❤ Inimă",    color:"#1F5C8B", desc:"Te întâlnești cu Dumnezeu prin adorare și liniște — privindu-I fața cu dragoste." },
-      Ascetics:        { cat:"🔥 Suflet",   color:"#C8892A", desc:"Te întâlnești cu Dumnezeu în singurătate și simplitate. Îndepărtarea distragerilor te apropie de El." }
+      Naturalists:     { label:"Naturaliști",      cat:"❤ Inimă",    color:"#1F5C8B", desc:"Te întâlnești cu Dumnezeu cel mai puternic prin creație și natură. Natura este catedrala ta." },
+      Sensates:        { label:"Senzoriali",        cat:"💪 Putere",   color:"#7B3F6E", desc:"Te întâlnești cu Dumnezeu prin frumusețe, artă și simțuri — vedere, sunet, miros, atingere și gust." },
+      Enthusiasts:     { label:"Entuziaști",        cat:"❤ Inimă",    color:"#1F5C8B", desc:"Te întâlnești cu Dumnezeu prin celebrare, bucurie și așteptare. Îl iubești pe Dumnezeu cu entuziasm!" },
+      Intellectuals:   { label:"Intelectuali",      cat:"💡 Minte",   color:"#1E6B3C", desc:"Te întâlnești cu Dumnezeu când mintea ta este trezită. A învăța ceva nou despre Dumnezeu îți eliberează adorarea." },
+      Traditionalists: { label:"Tradiționaliști",   cat:"💡 Minte",   color:"#1E6B3C", desc:"Te întâlnești cu Dumnezeu prin ritual, simbol și ritmurile sacre ale practicii creștine." },
+      Caregivers:      { label:"Îngrijitori",       cat:"💪 Putere",   color:"#7B3F6E", desc:"Te întâlnești cu Dumnezeu iubind și slujind altora. Îl vezi pe Hristos în fețele celor care suferă." },
+      Activists:       { label:"Activiști",         cat:"💪 Putere",   color:"#7B3F6E", desc:"Te întâlnești cu Dumnezeu prin acțiune și dreptate. Ești hrănit spiritual prin luptă." },
+      Contemplatives:  { label:"Contemplativi",     cat:"❤ Inimă",    color:"#1F5C8B", desc:"Te întâlnești cu Dumnezeu prin adorare și liniște — privindu-I fața cu dragoste." },
+      Ascetics:        { label:"Asceți",            cat:"🔥 Suflet",   color:"#C8892A", desc:"Te întâlnești cu Dumnezeu în singurătate și simplitate. Îndepărtarea distragerilor te apropie de El." }
     },
     questions: [
       "Mă simt cel mai aproape de Dumnezeu când sunt afară — în munți, păduri sau la ocean.",
@@ -362,8 +358,20 @@ function setLang(l) {
   document.getElementById('btnEN').classList.toggle('active', l === 'en');
   document.getElementById('btnRO').classList.toggle('active', l === 'ro');
   const resultsShowing = document.getElementById('resultsWrap').classList.contains('show');
-  if (resultsShowing) renderResults();
-  else render();
+  if (resultsShowing) {
+    renderResults();
+    // re-render static hero text even when results showing
+    const t = T[lang];
+    document.getElementById('heroLabel').textContent    = t.heroLabel;
+    document.getElementById('heroH1').innerHTML         = t.heroH1;
+    document.getElementById('heroP').innerHTML          = t.heroP;
+    document.getElementById('s1').textContent           = t.s1;
+    document.getElementById('s3').textContent           = t.s3;
+    document.getElementById('s5').textContent           = t.s5;
+    document.getElementById('progressLabel').textContent = t.allDone;
+  } else {
+    render();
+  }
 }
 
 // ─────────────────────────────────────────
@@ -373,6 +381,7 @@ function showResults() {
   document.getElementById('questionsWrap').style.display = 'none';
   document.getElementById('submitWrap').style.display    = 'none';
   document.getElementById('progressFill').style.width   = '100%';
+  document.getElementById('progressLabel').textContent   = T[lang].allDone;
   document.getElementById('resultsWrap').classList.add('show');
   renderResults();
   document.getElementById('resultsWrap').scrollIntoView({ behavior: 'smooth' });
@@ -392,7 +401,7 @@ function renderResults() {
     <div class="results-subtitle">${t.resultsSub}</div>
     <div class="winner-card">
       <div class="winner-label">${t.primaryLabel}</div>
-      <div class="winner-name">${winner}</div>
+      <div class="winner-name">${wp.label}</div>
       <div class="winner-cat">${wp.cat}</div>
       <div class="winner-desc">${wp.desc}</div>
     </div>
@@ -418,7 +427,7 @@ function renderResults() {
     const row   = document.createElement('div');
     row.className = 'score-result-row';
     row.innerHTML =
-      `<div class="score-result-name">${name}</div>` +
+      `<div class="score-result-name">${t.pathways[name].label}</div>` +
       `<div class="score-result-bar-wrap"><div class="score-result-bar" id="bar-${i}" style="background:${t.pathways[name].color}"></div></div>` +
       `<div class="score-result-num">${score}</div>`;
     rowsWrap.appendChild(row);
