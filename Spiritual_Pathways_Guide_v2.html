@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Spiritual Pathway</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --heart:        #1F5C8B;
+    --heart-light:  #EBF4FC;
+    --mind:         #1E6B3C;
+    --mind-light:   #EAF5EE;
+    --strength:     #7B3F6E;
+    --strength-light:#F7EEF5;
+    --soul:         #B5720A;
+    --soul-light:   #FEF6E7;
+    --dark:         #1A1A1A;
+    --muted:        #666;
+    --border:       #E5DDD5;
+    --bg:           #FAF8F5;
+    --card:         #FFFFFF;
+    --gold:         #C8892A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--heart);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(200,137,42,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 10%, rgba(255,255,255,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(28px, 6vw, 46px);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 500px;
+    margin: 0 auto 28px;
+    line-height: 1.65;
+  }
+  .hero-verse {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 40px;
+    padding: 10px 22px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+  }
+
+  /* ── CATEGORY TABS ── */
+  .cat-nav {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cat-nav::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 16px 12px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .cat-btn.active { color: var(--active-color); border-bottom-color: var(--active-color); }
+  .cat-btn:hover  { color: var(--active-color); }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ── CATEGORY HEADER ── */
+  .cat-header {
+    display: none;
+    margin-bottom: 32px;
+    padding: 28px 28px 24px;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-header.visible { display: block; }
+  .cat-header::before {
+    content: attr(data-emoji);
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    font-size: 52px;
+    opacity: 0.15;
+  }
+  .cat-header h2 {
+    font-family: 'Lora', serif;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+  .cat-header .cat-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 10px;
+  }
+  .cat-header p {
+    font-size: 14px;
+    line-height: 1.65;
+    opacity: 0.85;
+    max-width: 560px;
+  }
+
+  /* ── PATHWAY CARD ── */
+  .pathway-section {
+    display: none;
+  }
+  .pathway-section.visible { display: block; }
+
+  .pathway-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .pathway-card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  .card-header {
+    padding: 22px 24px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    user-select: none;
+  }
+  .card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .card-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .card-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-style: italic;
+  }
+  .chevron {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .pathway-card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+  .pathway-card.open .card-body { display: block; }
+
+  /* ── SECTIONS inside card ── */
+  .section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .section p, .section li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .section ul {
+    padding-left: 18px;
+  }
+  .section li { margin-bottom: 6px; }
+  .section li:last-child { margin-bottom: 0; }
+
+  /* challenge boxes */
+  .challenge-box {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 12px;
+  }
+  .challenge-box h4 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .challenge-box p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .warning-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .warning-item:last-child { margin-bottom: 0; }
+  .warning-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+  .warning-text { font-size: 14px; line-height: 1.65; color: #5a2a2a; }
+  .warning-title { font-weight: 600; }
+
+  /* ── BACK TO TOP ── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: var(--heart);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(31,92,139,0.3);
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .back-top.show { opacity: 1; pointer-events: all; }
+  .back-top:hover { transform: translateY(-2px); }
+
+  /* ── HEART colours ── */
+  .heart .card-num        { background: var(--heart); }
+  .heart .cat-header      { background: var(--heart-light); color: var(--heart); }
+  .heart .section-label   { color: var(--heart); }
+  .heart .section-label .dot { background: var(--heart); }
+  .heart .challenge-box   { background: var(--heart-light); }
+  .heart .challenge-box h4{ color: var(--heart); }
+
+  /* ── MIND colours ── */
+  .mind .card-num        { background: var(--mind); }
+  .mind .cat-header      { background: var(--mind-light); color: var(--mind); }
+  .mind .section-label   { color: var(--mind); }
+  .mind .section-label .dot { background: var(--mind); }
+  .mind .challenge-box   { background: var(--mind-light); }
+  .mind .challenge-box h4{ color: var(--mind); }
+
+  /* ── STRENGTH colours ── */
+  .strength .card-num        { background: var(--strength); }
+  .strength .cat-header      { background: var(--strength-light); color: var(--strength); }
+  .strength .section-label   { color: var(--strength); }
+  .strength .section-label .dot { background: var(--strength); }
+  .strength .challenge-box   { background: var(--strength-light); }
+  .strength .challenge-box h4{ color: var(--strength); }
+
+  /* ── SOUL colours ── */
+  .soul .card-num        { background: var(--soul); }
+  .soul .cat-header      { background: var(--soul-light); color: var(--soul); }
+  .soul .section-label   { color: var(--soul); }
+  .soul .section-label .dot { background: var(--soul); }
+  .soul .challenge-box   { background: var(--soul-light); }
+  .soul .challenge-box h4{ color: var(--soul); }
+
+  @media (max-width: 480px) {
+    .hero { padding: 40px 16px 36px; }
+    .section { padding: 16px 18px; }
+    .card-header { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Sacred Pathways · Gary Thomas</div>
+  <div style="display:flex; justify-content:center; gap:8px; margin-bottom:20px;">
+    <button class="lang-btn active" id="btnEN" onclick="setLang('en')" style="
+      padding: 8px 24px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.2); color: #fff; font-family:'DM Sans',sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;">EN  English</button>
+    <button class="lang-btn" id="btnRO" onclick="setLang('ro')" style="
+      padding: 8px 24px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.35);
+      background: transparent; color: rgba(255,255,255,0.6); font-family:'DM Sans',sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;">RO  Română</button>
+  </div>
+  <h1><span class="ro-text" style="display:none">Calea Mea Spirituală</span><span class="en-text">My Spiritual Pathway</span></h1>
+  <p><span class="ro-text" style="display:none">Cum te-a creat Dumnezeu să te conectezi cu El? Revino oricând să citești despre calea ta și să îți amintești cum să o trăiești.</span><span class="en-text">How did God wire you to connect with Him? Come back here anytime to read about your pathway and remember how to live it out.</span></p>
+  <div class="hero-verse"><span class="ro-text" style="display:none">„Să iubești pe Domnul Dumnezeul tău cu toată inima ta, cu tot sufletul tău, cu tot cugetul tău și cu toată puterea ta.”  — Marcu 12:30</span><span class="en-text">"Love the Lord your God with all your heart, soul, mind, and strength."  — Mark 12:30</span></div>
+</div>
+
+<!-- Category nav -->
+<nav class="cat-nav">
+  <button class="cat-btn active" style="--active-color: var(--heart)"  onclick="showCat('heart',   this)"><span class="ro-text" style="display:none">❤ Inimă</span><span class="en-text">❤ Heart</span></button>
+  <button class="cat-btn"        style="--active-color: var(--mind)"   onclick="showCat('mind',    this)"><span class="ro-text" style="display:none">💡 Minte</span><span class="en-text">💡 Mind</span></button>
+  <button class="cat-btn"        style="--active-color: var(--strength)"onclick="showCat('strength',this)"><span class="ro-text" style="display:none">💪 Putere</span><span class="en-text">💪 Strength</span></button>
+  <button class="cat-btn"        style="--active-color: var(--soul)"   onclick="showCat('soul',    this)"><span class="ro-text" style="display:none">🔥 Suflet</span><span class="en-text">🔥 Soul</span></button>
+</nav>
+
+<div class="main">
+
+<!-- ════════════════════════════════════
+     ❤  HEART
+════════════════════════════════════ -->
+<div id="cat-heart" class="pathway-section visible heart">
+  <div class="cat-header visible heart" data-emoji="❤">
+    <div class="cat-tag"><span class="ro-text" style="display:none">❤  Inimă — Marcu 12:30</span><span class="en-text">❤  Heart — Mark 12:30</span></div>
+    <h2><span class="ro-text" style="display:none">Iubește pe Dumnezeu cu toată Inima ta</span><span class="en-text">Love God with all your Heart</span></h2>
+    <p><span class="ro-text" style="display:none">Aceste căi se conectează cu Dumnezeu prin adorare, emoție și iubire personală profundă. Îl simți pe Dumnezeu cel mai mult când ceva te mișcă din interior — prin celebrare, frumusețe sau intimitate liniștită.</span><span class="en-text">These pathways connect with God through adoration, emotion, and deep personal love. You feel God most when something moves you from the inside — through celebration, beauty, or quiet intimacy.</span></p>
+  </div>
+
+  <!-- Enthusiasts -->
+  <div class="pathway-card heart" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">1</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Entuziaști</span><span class="en-text">Enthusiasts</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin celebrare și bucurie</span><span class="en-text">Loves God through celebration and joy</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Entuziast Îl iubește pe Dumnezeu prin celebrare plină de bucurie și deschidere spre supranatural. Se închină cu energie și așteptare — așteptând ca Dumnezeu să se miște, să vorbească și să răspundă. Vede ceva ce alții uneori nu observă: un văl subțire între lumea de zi cu zi și prezența lui Dumnezeu. Trăiește chiar la acea margine.</span><span class="en-text">An Enthusiast loves God through joyful celebration and openness to the supernatural. They worship with energy and expectancy — expecting God to move, speak, and respond. They see something others sometimes miss: a thin veil between the everyday world and the presence of God. They live right at that edge.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Îl simt pe Dumnezeu cel mai mult când Îl celebrează — cântând cu voce tare, ridicând mâinile, simțind entuziasm pentru prezența Lui. Adunările mari de închinare îi energizează. Adesea au fiori când prezența lui Dumnezeu este aproape sau sunt mișcați până la lacrimi când oamenii Îl laudă împreună. Se așteaptă ca Dumnezeu să facă minuni și astăzi.</span><span class="en-text">They feel God most when they are celebrating Him — singing loudly, lifting their hands, feeling excited about His presence. Large worship gatherings energise them. They often get chills when God's presence is near, or are moved to tears when people praise together. They expect God to still do miracles today.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Dumnezeu nu este distant sau tăcut — și Entuziastul crede asta cu toată inima.</span><span class="en-text">God is not distant or silent — and the Enthusiast believes this with their whole heart.</span></p><p><span class="ro-text" style="display:none"><strong>Faptele Apostolilor 2:17</strong> — Dumnezeu promite să-Și verse Duhul peste toți oamenii; fiii și fiicele vor profeți, tinerii vor vedea viziuni. Supranaturalul nu este o relicvă a trecutului.</span><span class="en-text"><strong>Acts 2:17</strong> — God promises to pour out His Spirit on all people; sons and daughters will prophesy, young men will see visions. The supernatural is not a relic of the past.</span></p><p><span class="ro-text" style="display:none"><strong>Ioan 6:63</strong> — Duhul dă viață; cuvintele lui Isus sunt duh și viață. Isus a lucrat într-un tărâm dincolo de natural și ne invită în el.</span><span class="en-text"><strong>John 6:63</strong> — the Spirit gives life; the words of Jesus are spirit and life. Jesus operated in a realm beyond the natural and invites us into it.</span></p><p><span class="ro-text" style="display:none"><strong>De-a lungul Scripturii</strong> — David a dansat înaintea chivotului cu tot ce avea. Psalmii sunt plini de bucurie și laudă. Biserica din Noul Testament a fost umplută cu Duhul Sfânt și oamenii au fost uimiți (Faptele Apostolilor 2). Ideea lui Thomas: celebrarea are o bază largă și profundă în Scriptură. Reticența de a te închina cu entuziasm este mai mult o trăsătură de personalitate decât un semn de maturitate spirituală.</span><span class="en-text"><strong>Throughout Scripture</strong> — David danced before the ark with everything he had. The Psalms overflow with joy and praise. The New Testament church was filled with the Holy Spirit and people were astonished (Acts 2). Thomas' point: celebration has a wide and deep foundation in Scripture. A reluctance to worship enthusiastically is more a personal temperament than a sign of spiritual maturity.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Căutarea experiențelor de dragul lor</span><span class="en-text">Seeking experiences for their own sake</span></span><span class="ro-text-inline" style="display:none">— rămâi fidel căutării lui Dumnezeu, nu sentimentelor noi. Sentimentele vin și trec.</span><span class="en-text-inline"> — remain true to seeking God rather than new feelings. Feelings come and go.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A fi independent</span><span class="en-text">Being independent</span></span><span class="ro-text-inline" style="display:none">— Entuziaștii au nevoie de o comunitate bisericească puternică care să-i ajute să interpreteze întâlnirile cu Dumnezeu. Nu merge singur.</span><span class="en-text-inline"> — Enthusiasts need a strong church community to help interpret their encounters with God. Don't go alone.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A pune semnul egal între sentimente bune și o închinare bună</span><span class="en-text">Equating good feelings with good worship</span></span><span class="ro-text-inline" style="display:none">— o experiență emoțională puternică nu este același lucru cu o credință autentică. Testează totul cu Scriptura.</span><span class="en-text-inline"> — a powerful emotional experience is not the same as genuine faith. Test everything against Scripture.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box heart">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Planifică un moment cu Dumnezeu această săptămână plin de celebrare. Pune muzică de închinare, cântă cu voce tare, spune-I lui Dumnezeu ce iubești la El. Nu te abține. Apoi întreabă-te: am căutat pe Dumnezeu sau doar sentimentul?</span><span class="en-text">Plan one time with God this week full of celebration. Put on worship music, sing out loud, tell God what you love about Him. Don't hold back. Afterwards ask yourself: was I pursuing God, or just the feeling?</span></p>
+        </div>
+        <div class="challenge-box heart" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Invită un prieten la un moment de închinare împreună. Pune un cântec de închinare. Întreabă-l apoi: „Ai simțit ceva? A fost Dumnezeu aproape?” Începe o conversație despre cum Dumnezeu se mișcă și astăzi.</span><span class="en-text">Invite a friend to a moment of worship together. Play one worship song. Ask them afterwards: "Did you feel anything? Was God close?" Start a conversation about how God still moves today.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contemplatives -->
+  <div class="pathway-card heart" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">2</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Contemplativi</span><span class="en-text">Contemplatives</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin adorare și liniște</span><span class="en-text">Loves God through adoration and stillness</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Contemplativ Îl iubește pe Dumnezeu prin adorare — stând liniștit în prezența Lui, privindu-I fața, oferindu-I iubire personală și devotament. Gary Thomas spune: doar tu poți să-I dai lui Dumnezeu această iubire și afecțiune personală. Pastorul tău, prietenul tău — ei nu pot face asta în locul tău. Este unic al tău de oferit.</span><span class="en-text">A Contemplative loves God through adoration — sitting quietly in His presence, gazing at His face, giving Him personal love and devotion. Gary Thomas says: only you can give God this personal love and affection. Your pastor, your friend — they cannot do this for you. It is uniquely yours to give.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt cel mai aproape de Dumnezeu în momente liniștite, fără grabă, singuri cu El — fără să ceară nimic, doar fiind prezenți. Au o viață interioară de rugăciune bogată. Cele mai grele momente din credința lor sunt când nu pot simți apropierea lui Dumnezeu. Vorbesc cu Dumnezeu ca cu un prieten apropiat.</span><span class="en-text">They feel closest to God in quiet, unhurried moments alone with Him — not asking for anything, just being present. They have a rich inner prayer life. The hardest times in their faith are when they cannot feel God's closeness. They talk to God like a close friend.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Contemplativul ia în serios primul cuvânt al Marii Porunci — nu doar să asculte, nu doar să slujească, ci să <em>iubească</em>.</span><span class="en-text">The Contemplative takes the first word of the Great Commandment seriously — not just obey, not just serve, but <em>love</em>.</span></p><p><span class="ro-text" style="display:none"><strong>Marcu 12:30</strong> — iubește pe Domnul Dumnezeul tău cu toată inima ta, cu tot sufletul tău, cu tot cugetul tău și cu toată puterea ta. Contemplativul își organizează întreaga viață spirituală în jurul acestui cuvânt: iubire.</span><span class="en-text"><strong>Mark 12:30</strong> — love the Lord your God with all your heart, soul, mind, and strength. The Contemplative organises their entire spiritual life around that one word: love.</span></p><p><span class="ro-text" style="display:none"><strong>Luca 14:26</strong> — Isus a spus că trebuie să-L iubim mai mult decât orice altă relație. Pentru Contemplativ, aceasta nu este o exagerare. Este centrul a tot.</span><span class="en-text"><strong>Luke 14:26</strong> — Jesus said we must love Him above all other relationships. For the Contemplative, this is not hyperbole. It is the centre of everything.</span></p><p><span class="ro-text" style="display:none"><strong>Maria din Betania (Luca 10:38-42)</strong> — Contemplativa clasică. S-a așezat la picioarele lui Isus și a ascultat pur și simplu, în timp ce totul în jurul ei continua. Isus a spus că ea a ales partea cea bună — și a apărat această alegere.</span><span class="en-text"><strong>Mary of Bethany (Luke 10:38-42)</strong> — the classic Contemplative. She sat at Jesus' feet and simply listened while everything else carried on around her. Jesus said she chose the better thing — and He defended that choice.</span></p><p><span class="ro-text" style="display:none"><strong>Isus Însuși</strong> — de-a lungul Evangheliilor S-a retras în locuri singuratice: munți, maluri liniștite, dimineți timpurii înainte ca alții să se trezească (Marcu 1:35; Luca 5:16). Acele momente nu au fost pierdute. Acolo S-a conectat cu Tatăl și S-a pregătit pentru tot restul.</span><span class="en-text"><strong>Jesus Himself</strong> — throughout the Gospels He withdrew to lonely places: mountains, quiet shores, early mornings before anyone else was awake (Mark 1:35; Luke 5:16). Those times were not wasted. They were where He connected with the Father and prepared for everything else.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Pierderea echilibrului</span><span class="en-text">Losing balance</span></span><span class="ro-text-inline" style="display:none">— iubirea pentru Dumnezeu nu trebuie să te facă să-ți uiți semenul sau să te retragi din comunitate.</span><span class="en-text-inline"> — love for God must not cause you to forget your neighbour or withdraw from community.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Crearea unui vid</span><span class="en-text">Creating a vacuum</span></span><span class="ro-text-inline" style="display:none">— un creștin vrea să fie umplut cu Duhul Sfânt, nu golit. Ai grijă la practicile care se concentrează pe golirea de sine.</span><span class="en-text-inline"> — a Christian wants to be filled with the Holy Spirit, not emptied out. Be careful of practices that focus on emptying yourself.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Singurătate versus izolare</span><span class="en-text">Solitude vs isolation</span></span><span class="ro-text-inline" style="display:none">— singurătatea aleargă spre Dumnezeu pentru a se conecta, apoi se întoarce. Izolarea fuge de viață. Nu sunt același lucru.</span><span class="en-text-inline"> — solitude runs toward God to connect, then returns. Isolation runs away from life. They are not the same.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box heart">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Rezervă 30 de minute cu Dumnezeu această săptămână — fără agendă. Doar stai și spune-I că Îl iubești. Încearcă să te rogi printr-un Psalm încet, lăsând fiecare verset să devină propria ta rugăciune.</span><span class="en-text">Carve out 30 minutes with God this week — no agenda. Just sit and tell Him you love Him. Try praying through one Psalm slowly, letting each line become your own prayer.</span></p>
+        </div>
+        <div class="challenge-box heart" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Invită un prieten într-un moment liniștit cu Dumnezeu împreună. Stați undeva, opriți telefoanele, petreceți câteva minute în tăcere înaintea lui Dumnezeu. Apoi spuneți un lucru pe care l-ați simțit sau auzit.</span><span class="en-text">Invite a friend into a quiet moment with God together. Sit somewhere, turn phones off, spend a few minutes in silence before God. Then share one thing you felt or heard.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     💡  MIND
+════════════════════════════════════ -->
+<div id="cat-mind" class="pathway-section mind" style="display:none">
+  <div class="cat-header mind" data-emoji="💡" style="display:block">
+    <div class="cat-tag"><span class="ro-text" style="display:none">💡  Minte — Marcu 12:30</span><span class="en-text">💡  Mind — Mark 12:30</span></div>
+    <h2><span class="ro-text" style="display:none">Iubește pe Dumnezeu cu toată Mintea ta</span><span class="en-text">Love God with all your Mind</span></h2>
+    <p><span class="ro-text" style="display:none">Aceste căi se conectează cu Dumnezeu prin înțelegere, adevăr și structură. Îl simți pe Dumnezeu cel mai mult când credința este ancorată și semnificativă — prin studiu profund sau prin ritm și ordine sacră.</span><span class="en-text">These pathways connect with God through understanding, truth, and structure. You feel God most when faith is grounded and meaningful — through deep study or through sacred rhythm and order.</span></p>
+  </div>
+
+  <!-- Intellectuals -->
+  <div class="pathway-card mind" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">3</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Intelectuali</span><span class="en-text">Intellectuals</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin învățare și adevăr</span><span class="en-text">Loves God through learning and truth</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Intelectual Îl iubește pe Dumnezeu cu mintea. Dacă un Intelectual se oprește din învățat, se simte departe de Dumnezeu. Fraza lor este: <em>lasă-mă să gândesc.</em></span><span class="en-text">An Intellectual loves God with the mind. When they learn something new about God, their adoration is unlocked. A stagnant mind feels like a stagnant relationship with God. Their phrase is: <em>let me think.</em></span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt vii când studiază Scriptura, când lucrează din greu să înțeleagă o întrebare dificilă sau când înțeleg ceva ce nu au înțeles niciodată înainte. Înfloresc în discuții bune despre credință. Iubesc biblioteca, comentariile, istoria bisericii — orice le extinde înțelegerea despre Dumnezeu.</span><span class="en-text">They feel alive when studying Scripture, wrestling with hard questions, or understanding something they never understood before. They thrive in good discussions about faith. They love the library, commentaries, church history — anything that stretches their understanding of God.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Biblia pune înțelepciunea și înțelegerea în centrul unei vieți bine trăite.</span><span class="en-text">The Bible places wisdom and understanding at the centre of a life well lived.</span></p><p><span class="ro-text" style="display:none"><strong>Proverbe 1:5-7</strong> — cel înțelept să asculte și să-și mărească știința; frica de Domnul este începutul înțelepciunii. În timp ce lumea spune să cauți fama și puterea, Scriptura spune să cauți întâi înțelepciunea.</span><span class="en-text"><strong>Proverbs 1:5-7</strong> — let the wise listen and add to their learning; the fear of the Lord is the beginning of wisdom. While the world says seek fame and power, Scripture says seek wisdom first.</span></p><p><span class="ro-text" style="display:none"><strong>Pavel</strong> — poate cel mai mare Intelectual din Noul Testament. Un fariseu instruit, riguros intelectual, care și-a folosit mintea pentru a pune fundamentul teologic al întregii credințe creștine. Scrisorile lui au schimbat lumea pentru că a gândit profund despre Dumnezeu și a scris pentru alții.</span><span class="en-text"><strong>Paul</strong> — perhaps the greatest Intellectual in the New Testament. A trained Pharisee, intellectually rigorous, who used his mind to lay the theological foundation of the entire Christian faith. His letters changed the world because he thought deeply about God and wrote it down for others.</span></p><p><span class="ro-text" style="display:none"><strong>Biserica timpurie</strong> — Thomas notează că a avut succes nu doar pentru că a trăit și a murit mai bine decât lumea păgână. A și gândit mai bine decât ea. Mințile lor erau predate lui Dumnezeu — și asta era puternic.</span><span class="en-text"><strong>The early church</strong> — Thomas notes they were successful not only because they outlived and out-died the pagan world. They also out-thought it. Their minds were surrendered to God — and that was powerful.</span></p><p><span class="ro-text" style="display:none"><strong>Amândoi contează</strong> — Isus a ales pescari neinstruiți, dar și un cărturar instruit în persoana lui Pavel. A căuta o cunoaștere mai profundă a lui Dumnezeu nu este aroganță — este fidelitate față de modul în care El l-a făcut pe Intelectual.</span><span class="en-text"><strong>Both matter</strong> — Jesus chose uneducated fishermen, but also a trained scholar in Paul. Pursuing deeper knowledge of God is not arrogance — it is faithfulness to how He made the Intellectual.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Iubirea de a te certa</span><span class="en-text">Loving controversy</span></span><span class="ro-text-inline" style="display:none">— a te certa pentru a câștiga, nu pentru a iubi, nu este evlavios (1 Timotei 6:4-5). Verifică mereu motivul din spatele fiecărei dezbateri.</span><span class="en-text-inline"> — arguing to win rather than to love is not godly (1 Timothy 6:4-5). Check the motive behind every debate.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A ști fără a face</span><span class="en-text">Knowing rather than doing</span></span><span class="ro-text-inline" style="display:none">— cunoașterea nu este un substitut pentru ascultare (Iacov 1:22). Persoana înțeleaptă aplică ce studiază.</span><span class="en-text-inline"> — knowledge is not a substitute for obedience (James 1:22). The wise person applies what they study.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Mândria</span><span class="en-text">Pride</span></span><span class="ro-text-inline" style="display:none">— dorința tăcută de a corecta practic pe toată lumea. Păzește-te de ea.</span><span class="en-text-inline"> — the quiet desire to correct virtually everyone. Guard against it.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box mind">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Alege un pasaj din Scriptură această săptămână și stai cu el mult timp. Nu te grăbi. Pune-i întrebări, notează ce descoperi. Lasă-ți mintea să fie complet implicată în Cuvântul lui Dumnezeu — și lasă acea implicare să devină închinare.</span><span class="en-text">Choose one passage of Scripture this week and sit with it for a long time. Don't rush. Ask questions of it, write down what you discover. Let your mind be fully engaged with God's Word — and let that engagement become worship.</span></p>
+        </div>
+        <div class="challenge-box mind" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Spune-i unui prieten un lucru pe care îl înveți despre Dumnezeu această săptămână. Nu pentru a impresiona — ci pentru a-l invita în descoperire. Întreabă: „Ce crezi? Schimbă asta ceva pentru tine?”</span><span class="en-text">Share one thing you are learning about God with a friend this week. Not to impress — to invite them into the discovery. Ask: "What do you think? Does this change anything for you?"</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Traditionalists -->
+  <div class="pathway-card mind" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">4</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Tradiționaliști</span><span class="en-text">Traditionalists</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin ritual și simbol</span><span class="en-text">Loves God through ritual and symbol</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Tradiționalist Îl iubește pe Dumnezeu prin ritual, simbol și ritmurile sacre ale practicii creștine. Thomas spune: memoria și repetiția au capacitatea de a ne aduce mai aproape de Dumnezeu. Tradițiile sunt ca niște prieteni vechi care ne duc înapoi la locul unde am fost cu Dumnezeu.</span><span class="en-text">A Traditionalist loves God through ritual, symbol, and the sacred rhythms of Christian practice. Thomas says: memory and repetition have the ability to bring us closer to God. Traditions are like old friends that take us back to where we have been with God.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt cel mai aproape de Dumnezeu prin practici familiare — Cina Domnului, Rugăciunea Domnului, calendarul bisericesc, rugăciunile scrise. Ceva se întâmplă în ei când primesc pâinea și paharul care se simte profund real. Structura și ritmul în închinare îi ajută să meargă mai adânc, nu mai superficial.</span><span class="en-text">They feel closest to God through familiar practices — Communion, the Lord's Prayer, the church calendar, written prayers. Something happens in them when they take the bread and cup that feels deeply real. Structure and rhythm in worship help them go deeper, not shallower.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Dumnezeu a construit ritmul și repetiția în viața poporului Său chiar de la început.</span><span class="en-text">God built rhythm and repetition into the life of His people from the very beginning.</span></p><p><span class="ro-text" style="display:none"><strong>Festivalurile din Vechiul Testament (Leviticul 23)</strong> — Paștele, Cincizecimea, Sărbătoarea Corturilor. An după an, aceleași celebrări. Nu pentru că Dumnezeu rămâne fără idei, ci pentru ca poporul Său să nu uite niciodată. Ritmul vieții îi atrăgea înapoi la El.</span><span class="en-text"><strong>Old Testament festivals (Leviticus 23)</strong> — Passover, Pentecost, the Feast of Booths. Year after year, the same celebrations. Not because God runs out of ideas, but so His people would never forget. The rhythm of life kept pulling them back to Him.</span></p><p><span class="ro-text" style="display:none"><strong>Cina Domnului (Luca 22:19)</strong> — pâine și vin, de fiecare dată, la fel. Isus a spus: faceți aceasta în amintirea Mea. Familiaritatea nu o face goală — o face profundă. Repetiția este ideea.</span><span class="en-text"><strong>Communion (Luke 22:19)</strong> — bread and wine, every time, the same. Jesus said: do this in remembrance of me. The familiarity does not make it empty — it makes it deep. Repetition is the point.</span></p><p><span class="ro-text" style="display:none"><strong>Botezul (Romani 6:3-4)</strong> — apă, cufundare, ridicare. Moarte și viață nouă. Simbolul este simplu, dar conține totul.</span><span class="en-text"><strong>Baptism (Romans 6:3-4)</strong> — water, going under, coming up. Death and new life. The symbol is simple but carries everything.</span></p><p><span class="ro-text" style="display:none"><strong>Psalmii</strong> — cea mai mare carte din Biblie este o colecție de rugăciuni pre-scrise. Poporul lui Dumnezeu le-a scris, le-a memorat, le-a cântat și s-a rugat cu ele iarăși și iarăși de-a lungul a mii de ani. Aceasta este tradiția în forma sa cea mai pură.</span><span class="en-text"><strong>The Psalms</strong> — the largest book in the Bible is a collection of pre-written prayers. God's people wrote them, memorised them, sang them, and prayed them again and again across thousands of years. That is tradition at its purest.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A-L sluji pe Dumnezeu fără a-L cunoaște</span><span class="en-text">Serving God without knowing God</span></span><span class="ro-text-inline" style="display:none">— religia poate sluji credința, dar nu o poate înlocui niciodată. Tradiția este o fotografie; arată spre ceva real, dar nu este lucrul real.</span><span class="en-text-inline"> — religion can serve faith but can never replace it. The tradition is a photograph; it points to something real but is not the real thing.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Judecarea altora</span><span class="en-text">Judging others</span></span><span class="ro-text-inline" style="display:none">— nu lăsa practicile tale să devină un mod de a-i judeca pe cei care se închină diferit (Col. 2:16-17).</span><span class="en-text-inline"> — do not let your practices become a way of judging those who worship differently (Col. 2:16-17).</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Repetarea mecanică</span><span class="en-text">Repeating mechanically</span></span><span class="ro-text-inline" style="display:none">— fără atenție, ritualul devine gol. Adu-ți inima de fiecare dată.</span><span class="en-text-inline"> — without attention, ritual becomes hollow. Bring your heart every time.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box mind">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Roagă-te printr-un Psalm această săptămână ca și cum ar fi propria ta rugăciune. Citește-l încet. Sau încearcă Rugăciunea Domnului — oprește-te la fiecare verset și gândește-l cu adevărat. Lasă memoria și repetiția să te aducă aproape de Dumnezeu.</span><span class="en-text">Pray through a Psalm this week as if it were your own prayer. Read it slowly. Or try the Lord's Prayer — stop at each line and really mean it. Let memory and repetition draw you close to God.</span></p>
+        </div>
+        <div class="challenge-box mind" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Invită un prieten să luați Cina Domnului împreună sau să spuneți o rugăciune simplă cu voce tare. Spune-i ce înseamnă acel moment pentru tine. Lasă tradiția să deschidă o conversație despre credință.</span><span class="en-text">Invite a friend to take Communion with you, or pray a simple prayer together out loud. Share what that moment means to you. Let the tradition open a conversation about faith.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     💪  STRENGTH
+════════════════════════════════════ -->
+<div id="cat-strength" class="pathway-section strength" style="display:none">
+  <div class="cat-header strength" data-emoji="💪" style="display:block">
+    <div class="cat-tag"><span class="ro-text" style="display:none">💪  Putere — Marcu 12:30</span><span class="en-text">💪  Strength — Mark 12:30</span></div>
+    <h2><span class="ro-text" style="display:none">Iubește pe Dumnezeu cu toată Puterea ta</span><span class="en-text">Love God with all your Strength</span></h2>
+    <p><span class="ro-text" style="display:none">Aceste căi se conectează cu Dumnezeu prin corp și acțiune exterioară. Îl simți pe Dumnezeu cel mai mult când faci ceva care contează — prin simțurile tale, cu mâinile tale sau prin lupta pentru dreptate.</span><span class="en-text">These pathways connect with God through the body and outward action. You feel God most when you are doing something that matters — through your senses, your hands, or your fight for justice.</span></p>
+  </div>
+
+  <!-- Sensates -->
+  <div class="pathway-card strength" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">5</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Senzoriali</span><span class="en-text">Sensates</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin frumusețe și simțuri</span><span class="en-text">Loves God through beauty and the senses</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Senzorial Îl iubește pe Dumnezeu prin cele cinci simțuri — ceea ce vede, aude, miroase, simte și gustă. Creștinismul fără frumusețe se simte ca o religie dezîntrupată a minții pentru această persoană. Dumnezeu este zgomotos și colorat în Scriptură, iar Senzorialii se conectează cu asta.</span><span class="en-text">A Sensate loves God through the five senses — what they see, hear, smell, touch, and taste. Christianity without beauty feels like a disembodied religion of the mind to this person. God is loud and colourful in Scripture, and Sensates connect with that.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt conectați cu Dumnezeu când mediul este frumos — muzică bună, artă, tămâie, lumânări sau ceva de ținut în mâini. O ceașcă caldă de cafea în timp ce citesc Biblia poate fi lucrul care îi ajută de fapt să se concentreze și să se simtă prezenți cu Dumnezeu. Lumea fizică este poarta lor.</span><span class="en-text">They feel connected to God when the environment is beautiful — good music, art, incense, candles, or something to hold in their hands. A warm cup of coffee while reading the Bible might be the thing that actually helps them focus and feel present with God. The physical world is their doorway.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Dumnezeu a folosit mereu lumea fizică pentru a-Și întâlni poporul — sunetul, mirosul, atingerea, gustul și vederea apar de-a lungul Scripturii ca moduri în care Se revelează.</span><span class="en-text">God has always used the physical world to meet His people — sound, smell, touch, taste, and sight all appear throughout Scripture as ways He reveals Himself.</span></p><p><span class="ro-text" style="display:none"><strong>Sunetul</strong> — Dumnezeu a creat lumea prin cuvânt (Geneza 1), a tăcut furtunile (Marcu 4:39) și promite trâmbițe la înviere (1 Tesaloniceni 4:16). Credința vine prin ascultare (Romani 10:17).</span><span class="en-text"><strong>Sound</strong> — God spoke creation into being (Genesis 1), silenced storms (Mark 4:39), and promises trumpets at the resurrection (1 Thessalonians 4:16). Faith comes by hearing (Romans 10:17).</span></p><p><span class="ro-text" style="display:none"><strong>Mirosul și Gustul</strong> — Tabernacolul era plin de tămâie (Exodul 30). Sărbătoarea Paștelui — miel fript, ierburi amare, pâine proaspătă — a fost concepută să implice fiecare simț (Exodul 12). Cina Domnului continuă asta: pâine reală, vin real, pentru a gusta și a-și aminti (Luca 22:19-20).</span><span class="en-text"><strong>Smell &amp; Taste</strong> — The Tabernacle was filled with incense (Exodus 30). The Passover feast — roasted lamb, bitter herbs, fresh bread — was designed to engage every sense (Exodus 12). Communion continues this: real bread, real wine, to taste and remember (Luke 22:19-20).</span></p><p><span class="ro-text" style="display:none"><strong>Atingerea</strong> — Isus a întins mâna spre leproșii pe care nimeni altcineva nu i-ar fi atins (Matei 8:3), Și-a pus mâinile peste bolnavi (Marcu 6:5), iar untdelemnul era vărsat peste oameni în rugăciune (Iacov 5:14).</span><span class="en-text"><strong>Touch</strong> — Jesus reached out to lepers no one else would touch (Matthew 8:3), laid hands on the sick (Mark 6:5), and oil was poured over people in prayer (James 5:14).</span></p><p><span class="ro-text" style="display:none"><strong>Vederea</strong> — Scriptura ne poruncește repetat să privim și să vedem. Redarea vederii orbilor este una dintre cele mai repetate minuni ale lui Isus (Ioan 9:1-7). Dumnezeu nu se teme de lumea fizică — El a creat-o și o folosește pentru a vorbi poporului Său.</span><span class="en-text"><strong>Sight</strong> — Scripture repeatedly commands us to look and behold. Restoring sight to the blind is one of Jesus' most repeated miracles (John 9:1-7). God is not afraid of the physical world — He created it and uses it to speak to His people.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Adorarea experienței, nu a lui Dumnezeu</span><span class="en-text">Worshipping the experience not God</span></span><span class="ro-text-inline" style="display:none">— cuvintele pot fi cântate cu tot atâta sentiment ca o comandă la restaurant. Întreabă-te mereu: Îl întâlnesc pe Dumnezeu aici sau doar mă bucur de atmosferă?</span><span class="en-text-inline"> — words can be sung with no more feeling than placing a food order. Always ask: am I meeting God here, or just enjoying the atmosphere?</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Idolatrizarea frumuseții</span><span class="en-text">Idolising beauty</span></span><span class="ro-text-inline" style="display:none">— a pleca de la o slujbă frumoasă simțindu-te satisfăcut fără să intri cu adevărat în prezența lui Dumnezeu. Frumusețea este o ușă, nu destinația.</span><span class="en-text-inline"> — leaving a beautiful service feeling satisfied without truly entering God's presence. Beauty is a door, not the destination.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A face totul despre tine</span><span class="en-text">Making it about you</span></span><span class="ro-text-inline" style="display:none">— dacă slujba care nu se desfășoară așa cum vrei te închide față de Dumnezeu, simțurile te slujesc pe tine, nu pe Dumnezeu.</span><span class="en-text-inline"> — if the service not going your way closes you down to God, the senses are serving you, not God.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box strength">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Pregătește un moment cu Dumnezeu această săptămână care îți implică simțurile. Aprinde o lumânare, fă-ți o băutură caldă, pune muzică liniștită. Lasă-ți simțurile să te ajute să te concentrezi — nu să te distragă. Întreabă-te: Îl întâlnesc pe Dumnezeu sau doar mă bucur de experiență?</span><span class="en-text">Set up one time with God this week that engages your senses. Light a candle, make a warm drink, play quiet music. Let your senses help you focus — not distract you. Ask: am I meeting God, or just enjoying the experience?</span></p>
+        </div>
+        <div class="challenge-box strength" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Împarte o masă cu un prieten și roagă-te înainte de a mânca. Gustă cu adevărat mâncarea, miroase-o, mulțumiți-I lui Dumnezeu împreună. Sau plimbă-te încet prin biserica ta și întreabă: „Ce vezi aici care îți amintește de Isus?”</span><span class="en-text">Share a meal with a friend and pray before eating. Really taste the food, smell it, thank God together. Or walk slowly through your church and ask: "What do you see here that reminds you of Jesus?"</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Caregivers -->
+  <div class="pathway-card strength" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">6</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Îngrijitori</span><span class="en-text">Caregivers</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu slujind altora</span><span class="en-text">Loves God by serving others</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Îngrijitor Îl iubește pe Dumnezeu iubindu-i pe alții în moduri practice, concrete. Slujirea nu este o povară pentru ei — este o formă de închinare. Thomas spune: a îngriji de alții este o activitate profetică — o dovadă a lucrării supranaturale a lui Dumnezeu în viața unei persoane.</span><span class="en-text">A Caregiver loves God by loving others in practical, hands-on ways. Serving is not a burden for them — it is a form of worship. Thomas says: caring for others is a prophetic activity — evidence of God's supernatural touch in a person's life.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Îl simt pe Dumnezeu cel mai puternic când ajută pe cineva care este bolnav, sărac sau în nevoie. Sunt primii care observă când cineva se luptă cu ceva. Îl văd pe Hristos în fețele celor care suferă. Slujirea îi umple — când ajută pe cineva, ceva în interior spune: acesta este lucrul corect. Pentru asta sunt aici.</span><span class="en-text">They feel God most strongly when helping someone who is sick, poor, or in need. They are the first to notice when someone is struggling. They see Christ in the faces of people who are hurting. Serving fills them up — when they help someone, something inside says: this is right. This is what I am here for.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Scriptura este directă: cum tratăm oamenii în nevoie nu este opțional — este o măsură a faptului dacă iubirea lui Dumnezeu este cu adevărat în noi.</span><span class="en-text">Scripture is direct: how we treat people in need is not optional — it is a measure of whether God's love is truly in us.</span></p><p><span class="ro-text" style="display:none"><strong>Ezechiel 16:49</strong> — păcatul Sodomei nu a fost doar imoralitatea. A fost că erau sătui și nepăsători și nu au ajutat pe cei săraci și nevoiași. Dumnezeu privește serios neglijarea altora.</span><span class="en-text"><strong>Ezekiel 16:49</strong> — the sin of Sodom was not only immorality. It was that they were overfed and unconcerned and did not help the poor and needy. God takes neglect of others seriously.</span></p><p><span class="ro-text" style="display:none"><strong>Samariteanul Milostiv (Luca 10)</strong> — povestea definitorie a Îngrijitorului. Toți ceilalți au trecut pe lângă el. Samariteanul s-a oprit, s-a murdărit pe mâini și a plătit din propriul buzunar. Fără program, fără comitet. Pur și simplu a ajutat.</span><span class="en-text"><strong>The Good Samaritan (Luke 10)</strong> — the Caregiver's defining story. Everyone else walked past. The Samaritan stopped, got his hands dirty, and paid out of his own pocket. No programme, no committee. He just helped.</span></p><p><span class="ro-text" style="display:none"><strong>1 Ioan 3:17</strong> — dacă vezi un frate în nevoie și nu ai milă, cum poate fi iubirea lui Dumnezeu în tine? A îngriji de alții nu este un extra spiritual — este o dovadă a prezenței lui Dumnezeu.</span><span class="en-text"><strong>1 John 3:17</strong> — if you see a brother in need and have no pity, how can God's love be in you? Caring for others is not a spiritual extra — it is evidence of God's presence.</span></p><p><span class="ro-text" style="display:none"><strong>Matei 25:40</strong> — orice ai făcut pentru unul dintre cei mai mici, ai făcut pentru Mine. Îngrijitorul nu doar slujește oamenii — slujește pe Hristos în fețele celor care suferă.</span><span class="en-text"><strong>Matthew 25:40</strong> — whatever you did for one of the least of these, you did it for me. The Caregiver does not just serve people — they serve Christ in the faces of people who are hurting.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Judecarea altora</span><span class="en-text">Judging others</span></span><span class="ro-text-inline" style="display:none">— Marta a judecat-o pe Maria pentru că a stat la picioarele lui Isus în loc să ajute. Îngrijirea nu este o licență de a-i judeca pe cei care se închină diferit.</span><span class="en-text-inline"> — Martha judged Mary for sitting at Jesus' feet instead of helping. Caregiving is not a licence to judge those who worship differently.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Slujirea pentru auto-validare</span><span class="en-text">Serving for self-validation</span></span><span class="ro-text-inline" style="display:none">— unii slujesc pentru a fi necesari sau iubiți la rândul lor. Când îngrijirea devine despre noi, nu mai este închinare.</span><span class="en-text-inline"> — some serve to be needed or loved in return. When caregiving becomes about us, it stops being worship.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Neglijarea celor mai apropiați de tine</span><span class="en-text">Neglecting those closest to you</span></span><span class="ro-text-inline" style="display:none">— Dumnezeu face din casă o prioritate (1 Timotei 5:8). Nu-ți neglija familia în timp ce salvezi lumea.</span><span class="en-text-inline"> — God makes home a priority (1 Timothy 5:8). Don't neglect your family while saving the world.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box strength">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Privește în jurul vieții tale această săptămână. Ce nevoie vezi pe care nimeni nu o satisface? Alege una și satisface-o. Apoi roagă-te: „Dumnezeule, am făcut asta pentru Tine.” Verifică-ți inima — a fost iubire autentică?</span><span class="en-text">Look around your life this week. What need do you see that no one is meeting? Choose one and meet it. Then pray: "God, I did that for You." Check your heart — was it genuine love?</span></p>
+        </div>
+        <div class="challenge-box strength" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Invită un prieten să slujească alături de tine — vizitați pe cineva singur, aduceți mâncare unei persoane în nevoie. Faceți asta împreună și vorbiți după: „Ce ai simțit? Ai sesizat prezența lui Dumnezeu acolo?”</span><span class="en-text">Invite a friend to serve alongside you — visit someone lonely, bring food to someone in need. Do it together and talk after: "What did you feel? Did you sense God there?"</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activists -->
+  <div class="pathway-card strength" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">7</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Activiști</span><span class="en-text">Activists</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin dreptate și acțiune</span><span class="en-text">Loves God through justice and action</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Activist Îl iubește pe Dumnezeu apărând ce este drept — apărând pe cei slabi, luptând împotriva nedreptății și confruntând răul. Thomas spune că sunt hrăniți spiritual prin luptă. Frica de confruntare creează o dependență de Dumnezeu care aduce o intimitate mai profundă cu El.</span><span class="en-text">An Activist loves God by standing up for what is right — defending the weak, fighting injustice, and confronting evil. Thomas says they are spiritually nourished through the battle. The fear of confrontation creates a dependence on God that brings deeper intimacy with Him.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt cel mai vii când apără ceva ce contează. Au o mânie justă față de nedreptate — ceva în interior spune: nu este corect, cineva trebuie să facă ceva. Rugăciunea este una dintre cele mai puternice arme ale lor. Îl văd pe Dumnezeu lucrând când acționează prin credință.</span><span class="en-text">They feel most alive when standing up for something that matters. They get a righteous anger at injustice — something in them says: this is not right, someone has to do something. Prayer is one of their most powerful weapons. They see God move when they act in faith.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Chemarea la dreptate trece prin toată Scriptura — nu este o preferință de personalitate, este vocea lui Dumnezeu.</span><span class="en-text">The call to justice runs throughout Scripture — it is not a personality preference, it is the voice of God.</span></p><p><span class="ro-text" style="display:none"><strong>Isaia 1:16-17</strong> — încetați să faceți rău, învățați să faceți bine, căutați dreptatea, izbăviți pe cel oprimat, apărați orfanul, pledați pentru văduvă. Acesta este Dumnezeu vorbind direct. Nu este opțional și nu este pentru câțiva aleși.</span><span class="en-text"><strong>Isaiah 1:16-17</strong> — cease to do evil, learn to do good, seek justice, rescue the oppressed, defend the orphan, plead for the widow. This is God speaking directly. It is not optional, and it is not for a select few.</span></p><p><span class="ro-text" style="display:none"><strong>Istoria bisericii</strong> — creștinii au condus unele dintre cele mai mari mișcări de dreptate pe care lumea le-a văzut. William Wilberforce a luptat ani de zile pentru a pune capăt sclaviei în Anglia. Charles Finney a refuzat să-i boteze pe creștinii care susțineau sclavia. Biserica este cea mai puternică atunci când susține ceea ce susține Dumnezeu.</span><span class="en-text"><strong>Church history</strong> — Christians have led some of the greatest justice movements the world has seen. William Wilberforce fought for years to end slavery in England. Charles Finney refused to baptise Christians who supported slavery. The church is most powerful when it stands for what God stands for.</span></p><p><span class="ro-text" style="display:none"><strong>1 Timotei 2:1-2</strong> — Pavel îi cheamă pe credincioși să se roage pentru toți, pentru regi și conducători, ca oamenii să poată trăi în pace și să-L cunoască pe Dumnezeu. Rugăciunea nu este pasivă. Pentru un Activist, rugăciunea este una dintre cele mai puternice forme de luptă.</span><span class="en-text"><strong>1 Timothy 2:1-2</strong> — Paul calls believers to pray for everyone, for kings and leaders, so that people can live in peace and come to know God. Prayer is not passive. For an Activist, prayer is one of the most powerful forms of battle.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A deveni critic</span><span class="en-text">Becoming judgmental</span></span><span class="ro-text-inline" style="display:none">— a presupune că sfințenia înseamnă mai puțină toleranță față de păcătoși. Auto-îndreptățirea nu este compasiunea lui Hristos.</span><span class="en-text-inline"> — assuming holiness means less tolerance for sinners. Self-righteousness is not the compassion of Christ.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Ambiție și eșec moral</span><span class="en-text">Ambition and moral failure</span></span><span class="ro-text-inline" style="display:none">— ambiție plus secretomanie plus oboseală este teren fertil pentru păcat. Fiecare Activist are nevoie de o responsabilizare sinceră.</span><span class="en-text-inline"> — ambition plus secrecy plus fatigue is fertile ground for sin. Every Activist needs honest accountability.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Preocupat de rezultate</span><span class="en-text">Preoccupied with results</span></span><span class="ro-text-inline" style="display:none">— lasă rezultatele lui Dumnezeu, altfel vei fi condus de succes, nu de călăuzirea Duhului Sfânt.</span><span class="en-text-inline"> — leave results to God or you will be driven by success rather than the Holy Spirit's leading.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box strength">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Întreabă-te: ce problemă de nedreptate îmi mișcă inima cel mai mult? Petrece timp această săptămână rugându-te specific despre ea — nu doar vorbind cu Dumnezeu despre ea, ci ascultând ce vrea El să faci. Rugăciunea este o luptă.</span><span class="en-text">Ask yourself: what issue of injustice stirs my heart most? Spend time this week praying specifically about it — not just talking to God about it, but listening for what He wants you to do. Prayer is battle.</span></p>
+        </div>
+        <div class="challenge-box strength" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Găsește un act practic de dreptate pe care îl poți face cu un prieten această săptămână. Vorbește pentru cineva, ajută pe cineva în nevoie. Vorbiți după: „Te-a adus asta mai aproape de Dumnezeu? Ce ai simțit?”</span><span class="en-text">Find one practical act of justice you can do with a friend this week. Speak up for someone, help someone in need. Talk after: "Did that bring you closer to God? What did you feel?"</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     🔥  SOUL
+════════════════════════════════════ -->
+<div id="cat-soul" class="pathway-section soul" style="display:none">
+  <div class="cat-header soul" data-emoji="🔥" style="display:block">
+    <div class="cat-tag"><span class="ro-text" style="display:none">🔥  Suflet — Marcu 12:30</span><span class="en-text">🔥  Soul — Mark 12:30</span></div>
+    <h2><span class="ro-text" style="display:none">Iubește pe Dumnezeu cu tot Sufletul tău</span><span class="en-text">Love God with all your Soul</span></h2>
+    <p><span class="ro-text" style="display:none">Aceste căi se conectează cu Dumnezeu prin viața interioară — rugăciune, singurătate și ceea ce depășește cuvintele. Îl simți pe Dumnezeu cel mai mult când zgomotul dispare și sinele tău profund poate fi pur și simplu prezent cu El.</span><span class="en-text">These pathways connect with God through the inner life — prayer, solitude, and what goes beyond words. You feel God most when the noise is stripped away and your deep self can simply be present with Him.</span></p>
+  </div>
+
+  <!-- Ascetics -->
+  <div class="pathway-card soul" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">8</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Asceți</span><span class="en-text">Ascetics</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin singurătate și simplitate</span><span class="en-text">Loves God through solitude and simplicity</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Ascet Îl iubește pe Dumnezeu prin singurătate, tăcere și simplitate — îndepărtând tot zgomotul și distragerile pentru ca sinele lor profund să fie pe deplin prezent cu Dumnezeu. Pun accent pe fapte înaintea cuvintelor. Îi tratează pe alții cu blândețe supranaturală, fiind strict cu ei înșiși.</span><span class="en-text">An Ascetic loves God through solitude, silence, and simplicity — stripping away all noise and distraction so their deep self can be fully present with God. They stress deeds before words. They treat others with supernatural gentleness while being strict with themselves.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt cel mai aproape de Dumnezeu dimineața devreme, înainte ca alții să se trezească, sau noaptea târziu când lumea este liniștită. Adunările zgomotoase îi obosesc și au nevoie de timp singuri pentru a procesa și a se ruga. Postul și simplitatea li se par naturale — nu ca pedeapsă, ci ca un mod de a-și ascuți concentrarea asupra lui Dumnezeu.</span><span class="en-text">They feel closest to God early in the morning before anyone is awake, or late at night when the world is quiet. They find noisy gatherings draining and need time alone to process and pray. Fasting and simplicity feel natural — not as punishment, but as a way to sharpen focus on God.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Calea Ascetului este construită pe trei practici — singurătate, tăcere și simplitate — toate cu rădăcini profunde în Scriptură.</span><span class="en-text">The Ascetic pathway is built on three practices — solitude, silence, and simplicity — all with deep roots in Scripture.</span></p><p><span class="ro-text" style="display:none"><strong>Singurătate (Marcu 1:35)</strong> — foarte de dimineață, pe când era încă întuneric, Isus S-a sculat și a plecat într-un loc singuratic să Se roage. Singurătatea nu era opțională pentru Isus — era esențială. S-a întors la oameni. Dar a avut nevoie întâi de acel timp singur. Singurătatea ne pregătește să ne întoarcem.</span><span class="en-text"><strong>Solitude (Mark 1:35)</strong> — very early in the morning, while it was still dark, Jesus got up and went to a solitary place to pray. Solitude was not optional for Jesus — it was essential. He came back to the people. But He needed that time alone first. Solitude prepares us to return.</span></p><p><span class="ro-text" style="display:none"><strong>Tăcere (1 Împărați 19:11-12)</strong> — Ilie a șezut singur într-o peșteră, obosit și înfricoșat. Dumnezeu nu a vorbit în vânt, în cutremur sau în foc. A vorbit într-o șoaptă blândă. Petrecem atât de mult din timpul nostru de rugăciune vorbind. Tăcerea este modul în care auzim șoapta.</span><span class="en-text"><strong>Silence (1 Kings 19:11-12)</strong> — Elijah sat alone in a cave, worn out and afraid. God did not speak in the wind, the earthquake, or the fire. He spoke in a quiet whisper. We spend so much of our prayer time talking. Silence is how we hear the whisper.</span></p><p><span class="ro-text" style="display:none"><strong>Simplitate</strong> — viețile noastre sunt pline de zgomot: telefoane, rețele sociale, agitație, dezordine. Simplitatea înseamnă a îndepărta deliberat o parte din asta pentru a ne putea concentra pe ce contează cel mai mult. Nu este pedeapsă — este eliberarea drumului spre Dumnezeu.</span><span class="en-text"><strong>Simplicity</strong> — our lives are full of noise: phones, social media, busyness, clutter. Simplicity means deliberately removing some of that so we can focus on what matters most. It is not punishment — it is clearing the path to God.</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Accentuarea excesivă a pietății personale</span><span class="en-text">Overemphasising personal piety</span></span><span class="ro-text-inline" style="display:none">— Dumnezeu ne cheamă la dreptate și milă, nu doar la sfințenie interioară (Zaharia 7:1-10). Singurătatea te umple; trebuie să te întorci înapoi.</span><span class="en-text-inline"> — God calls us to justice and mercy, not just inner holiness (Zechariah 7:1-10). Solitude fills you up; you must come back out.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Căutarea durerii pentru ea însăși</span><span class="en-text">Seeking pain for its own sake</span></span><span class="ro-text-inline" style="display:none">— ascetismul este un instrument care te ajută să ajungi la Dumnezeu — nu este niciodată scopul în sine. Facem asta pentru a ne poziționa înaintea lui Dumnezeu, nu pentru a-I câștiga favoarea.</span><span class="en-text-inline"> — asceticism is a means to see God more clearly, never an end in itself. We do it to position ourselves before God, not to earn His favour.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">A fi dur cu alții</span><span class="en-text">Being harsh with others</span></span><span class="ro-text-inline" style="display:none">— Asceții sănătoși îi tratează pe alții cu blândețe și respect. Nu toți simt această chemare. Nu-i disprețui pe cei care au nevoie de frumusețe sau celebrare.</span><span class="en-text-inline"> — healthy Ascetics treat other people with gentleness and respect. Not everyone feels this calling. Don't look down on those who need beauty or celebration.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box soul">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Alege un mic act de simplitate: postește o masă și folosește acel timp pentru rugăciune; lasă-ți telefonul deoparte o seară; trezește-te dimineața devreme și stai în tăcere 10 minute. Doar tu și Dumnezeu.</span><span class="en-text">Choose one small act of simplicity: fast one meal and use that time to pray; put your phone away for one evening; wake up early one morning and sit in silence for 10 minutes. Just you and God.</span></p>
+        </div>
+        <div class="challenge-box soul" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Invită un prieten într-un moment liniștit cu Dumnezeu. Stați afară noaptea, opriți telefoanele, rugați-vă împreună în tăcere câteva minute. Apoi spuneți un lucru pe care l-ați observat. Nu ai nevoie de cuvinte pentru a ucenici pe cineva — uneori tăcerea spune totul.</span><span class="en-text">Invite a friend into a quiet moment with God. Sit outside at night, turn phones off, pray together in silence for a few minutes. Then share one thing you noticed. You don't need words to disciple someone — sometimes the quiet says everything.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Naturalists -->
+  <div class="pathway-card soul" onclick="toggleCard(this)">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-num">9</div>
+        <div>
+          <div class="card-title"><span class="ro-text" style="display:none">Naturaliști</span><span class="en-text">Naturalists</span></div>
+          <div class="card-subtitle"><span class="ro-text" style="display:none">Îl iubește pe Dumnezeu prin creație și natură</span><span class="en-text">Loves God through creation and the outdoors</span></div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Ce este?</span><span class="en-text">What is it?</span></div>
+        <p><span class="ro-text" style="display:none">Un Naturalist Îl iubește pe Dumnezeu afară — în creație. Thomas spune: în timp ce mergea printr-o pajiște și privea apusul soarelui, a realizat că indiferent de durerea personală, situația financiară sau circumstanțe — dacă putea fi afară, era mereu un om bogat. Aceasta este inima Naturalistului.</span><span class="en-text">A Naturalist loves God outdoors — in creation. Thomas says: while walking through a meadow and watching the sun go down, he realised that regardless of personal pain, financial situation, or circumstances — if he could be outside, he was always a rich man. That is the heart of the Naturalist.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Cum Îl trăiesc pe Dumnezeu</span><span class="en-text">How they experience God</span></div>
+        <p><span class="ro-text" style="display:none">Se simt neliniștiți când stau prea mult în interior. Le este mai ușor să se roage mergând decât stând. Au avut momente afară — privind un apus, stând lângă ocean, șezând sub cerul liber — când Dumnezeu s-a simțit aproape, real și prezent. Creația este catedrala lor.</span><span class="en-text">They feel restless when stuck indoors too long. They find it easier to pray walking than sitting. They have had moments outside — watching a sunset, standing by the ocean, sitting under an open sky — when God felt close, real, and present. Creation is their cathedral.</span></p>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Exemple biblice</span><span class="en-text">Biblical examples</span></div>
+        <p><span class="ro-text" style="display:none">Creația nu este doar frumoasă — este o fereastră spre cine este Dumnezeu, iar Scriptura este plină de oameni care L-au întâlnit acolo.</span><span class="en-text">Creation is not just beautiful — it is a window into who God is, and Scripture is full of people who met Him there.</span></p><p><span class="ro-text" style="display:none"><strong>Psalmul 19:1</strong> — cerurile spun slava lui Dumnezeu. De fiecare dată când un Naturalist privește în sus, aude ceea ce a auzit David.</span><span class="en-text"><strong>Psalm 19:1</strong> — the heavens declare the glory of God. Every time a Naturalist looks up, they are hearing what David heard.</span></p><p><span class="ro-text" style="display:none"><strong>Psalmul 23</strong> — scris de un păstor care a trăit afară. Pășunile verzi și apele line care restaurează sufletul nu sunt doar poezie. Este un om descriind exact cum s-a întâlnit cu Dumnezeu.</span><span class="en-text"><strong>Psalm 23</strong> — written by a shepherd who lived outdoors. Green pastures and quiet waters restoring the soul is not just poetry. It is a man describing exactly how he met with God.</span></p><p><span class="ro-text" style="display:none"><strong>Romani 1:20</strong> — calitățile invizibile ale lui Dumnezeu, puterea Sa și natura Sa eternă, sunt văzute clar prin ceea ce a făcut. Creația nu este decorație. Este revelație.</span><span class="en-text"><strong>Romans 1:20</strong> — God's invisible qualities, His power and eternal nature, are clearly seen through what He has made. Creation is not decoration. It is revelation.</span></p><p><span class="ro-text" style="display:none"><strong>Marcu 1:35</strong> — Isus Însuși a mers afară să Se roage. Înainte de ziuă, singur, departe de templu și mulțimi. Ucenicii a trebuit să-L caute. Era afară, cu Tatăl. Chiar de la început, prima locuință a lui Dumnezeu cu omenirea a fost o grădină (Geneza 2).</span><span class="en-text"><strong>Mark 1:35</strong> — Jesus Himself went outside to pray. Before daylight, alone, away from the temple and the crowds. The disciples had to search for Him. He was outside, with the Father. From the very beginning, God's first dwelling with humanity was a garden (Genesis 2).</span></p>
+      </div>
+      <div class="section" style="background:#fff8f8">
+        <div class="section-label" style="color:#7a1a1a"><span class="dot" style="background:#7a1a1a"></span><span class="ro-text" style="display:none">Avertismente (Gary Thomas)</span><span class="en-text">Warnings (Gary Thomas)</span></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Individualism</span><span class="en-text">Individualism</span></span><span class="ro-text-inline" style="display:none">— Isus mergea afară pentru a fi reumplut, apoi se întorcea la oameni. Nu folosi creația pentru a evita responsabilitățile de a-L urma pe Isus.</span><span class="en-text-inline"> — Jesus went outside to be refilled, then came back to the people. Don't use creation to escape the duties of following Jesus.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Înșelăciune spirituală</span><span class="en-text">Spiritual delusion</span></span><span class="ro-text-inline" style="display:none">— orice simți sau percepi afară trebuie testat cu Scriptura. Biblia este mereu ghidul nostru final.</span><span class="en-text-inline"> — anything you feel or sense outdoors must be tested against Scripture. The Bible is always our final guide.</span></div></div>
+        <div class="warning-item"><div class="warning-icon">⚠</div><div class="warning-text"><span class="warning-title"><span class="ro-text" style="display:none">Idolatrizarea naturii</span><span class="en-text">Idolising nature</span></span><span class="ro-text-inline" style="display:none">— Dumnezeu a făcut creația; El nu este creația. Continuă să-ți miști privirea dincolo de fereastră, spre Cel pe care fereastra Îl dezvăluie.</span><span class="en-text-inline"> — God made creation; He is not creation. Keep your eyes moving past the window, to the One the window reveals.</span></div></div>
+      </div>
+      <div class="section">
+        <div class="section-label"><span class="dot"></span><span class="ro-text" style="display:none">Provocări pentru tine săptămâna aceasta</span><span class="en-text">Challenges for you this week</span></div>
+        <div class="challenge-box soul">
+          <h4><span class="ro-text" style="display:none">🙏 Devoțiune în Rugăciune</span><span class="en-text">🙏 Prayer Devotion</span></h4>
+          <p><span class="ro-text" style="display:none">Mergi afară să te rogi cel puțin o dată această săptămână. Ia-ți Biblia. Lasă creația să-ți deschidă inima — vorbește cu Dumnezeu despre ce vezi. Întreabă: „Ce îmi spune această parte a creației despre cine este Dumnezeu?”</span><span class="en-text">Go outside to pray at least once this week. Take your Bible. Let creation open your heart — talk to God about what you see. Ask: "What does this part of creation tell me about who God is?"</span></p>
+        </div>
+        <div class="challenge-box soul" style="margin-top:10px">
+          <h4><span class="ro-text" style="display:none">👣 Ucenicie</span><span class="en-text">👣 Discipleship</span></h4>
+          <p><span class="ro-text" style="display:none">Invită o persoană să meargă cu tine. Mergeți pur și simplu împreună. Întreabă-o: „Ce vezi în jurul tău care îți amintește de Dumnezeu?” Lasă creația să înceapă conversația. Nu ai nevoie de un curriculum — doar de un cer liber.</span><span class="en-text">Invite one person to walk with you. Just walk together. Ask them: "What do you see around you that reminds you of God?" Let creation start the conversation. You don't need a curriculum — just an open sky.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function showCat(cat, btn) {
+  document.querySelectorAll('.pathway-section').forEach(s => s.style.display = 'none');
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cat-' + cat).style.display = 'block';
+  btn.classList.add('active');
+  window.scrollTo({top: document.querySelector('.cat-nav').offsetTop - 10, behavior: 'smooth'});
+}
+
+function toggleCard(card) {
+  const isOpen = card.classList.contains('open');
+  // Close all in same category
+  card.closest('.pathway-section').querySelectorAll('.pathway-card').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+// Back to top button
+window.addEventListener('scroll', () => {
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 300);
+});
+
+// Auto-open first card in visible section
+document.querySelector('.pathway-card').classList.add('open');
+
+// ── LANGUAGE TOGGLE ──
+function setLang(lang) {
+  const showRo = lang === 'ro';
+  document.querySelectorAll('.ro-text, .ro-text-inline').forEach(el => {
+    el.style.display = showRo ? '' : 'none';
+  });
+  document.querySelectorAll('.en-text, .en-text-inline').forEach(el => {
+    el.style.display = showRo ? 'none' : '';
+  });
+  document.getElementById('btnEN').classList.toggle('active', !showRo);
+  document.getElementById('btnRO').classList.toggle('active', showRo);
+  document.getElementById('btnEN').style.background = showRo ? 'transparent' : 'rgba(255,255,255,0.2)';
+  document.getElementById('btnEN').style.borderColor = showRo ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.9)';
+  document.getElementById('btnEN').style.color = showRo ? 'rgba(255,255,255,0.6)' : '#fff';
+  document.getElementById('btnRO').style.background = showRo ? 'rgba(255,255,255,0.2)' : 'transparent';
+  document.getElementById('btnRO').style.borderColor = showRo ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)';
+  document.getElementById('btnRO').style.color = showRo ? '#fff' : 'rgba(255,255,255,0.6)';
+}
+</script>
+</body>
+</html>
