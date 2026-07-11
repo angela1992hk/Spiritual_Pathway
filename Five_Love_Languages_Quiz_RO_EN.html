@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cele 5 Limbaje ale Iubirii / The 5 Love Languages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF6EE;
+    --ink:#2F2A26;
+    --ink-soft:#6B6459;
+    --line:#E7DFCE;
+    --card:#FFFFFF;
+    --gold:#B98B3E;      --gold-bg:#F6ECD9;
+    --sage:#5F8B63;       --sage-bg:#E7F0E4;
+    --plum:#8C5A76;        --plum-bg:#F2E6ED;
+    --teal:#3E7787;         --teal-bg:#E2EDEF;
+    --rose:#B5615A;          --rose-bg:#F5E6E3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px 80px;}
+  header{
+    padding:56px 0 28px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    margin-bottom:32px;
+    position:relative;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:38px;
+    line-height:1.15;
+    margin:0 0 8px;
+  }
+  h1 .alt{
+    display:block;
+    font-weight:400;
+    font-style:italic;
+    font-size:20px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  .lang-toggle{
+    display:inline-flex;
+    margin-top:22px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .lang-toggle button{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.04em;
+    padding:8px 20px;
+    border:none;
+    background:transparent;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .lang-toggle button.active{
+    background:var(--ink);
+    color:var(--cream);
+  }
+  .intro{
+    font-size:15px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    text-align:center;
+    max-width:520px;
+    margin:0 auto 40px;
+  }
+  .intro strong{color:var(--ink);font-weight:600;}
+
+  .progress-bar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(250,246,238,.94);
+    backdrop-filter:blur(6px);
+    padding:12px 0;
+    margin-bottom:36px;
+    border-bottom:1px solid var(--line);
+  }
+  .progress-track{
+    height:4px;
+    background:var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--gold);
+    width:0%;
+    transition:width .25s ease;
+  }
+  .progress-label{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:8px;
+    text-align:center;
+    letter-spacing:.03em;
+  }
+
+  .item{
+    margin-bottom:22px;
+  }
+  .item-num{
+    font-family:'Fraunces',serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+    padding-left:2px;
+  }
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:10px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option:hover{border-color:var(--ink-soft);}
+  .option.selected{
+    border-color:var(--sel-color, var(--gold));
+    background:var(--sel-bg, var(--gold-bg));
+  }
+  .option input{display:none;}
+  .chip{
+    flex:0 0 auto;
+    width:28px;height:28px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:14px;
+    margin-top:1px;
+  }
+  .chip.A{background:var(--gold-bg);color:var(--gold);}
+  .chip.B{background:var(--sage-bg);color:var(--sage);}
+  .chip.C{background:var(--plum-bg);color:var(--plum);}
+  .chip.D{background:var(--teal-bg);color:var(--teal);}
+  .chip.E{background:var(--rose-bg);color:var(--rose);}
+  .option-text{flex:1;}
+  .txt-primary{font-size:15px;line-height:1.5;}
+  .txt-secondary{
+    font-size:13px;
+    font-style:italic;
+    color:var(--ink-soft);
+    margin-top:3px;
+    line-height:1.4;
+  }
+
+  .bottom-bar{
+    position:sticky;
+    bottom:0;
+    background:rgba(250,246,238,.96);
+    backdrop-filter:blur(6px);
+    border-top:1px solid var(--line);
+    padding:16px 0;
+    text-align:center;
+    margin-top:40px;
+  }
+  .bottom-bar .count{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .see-results{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:.02em;
+    background:var(--ink);
+    color:var(--cream);
+    border:none;
+    border-radius:999px;
+    padding:13px 34px;
+    cursor:pointer;
+    transition:opacity .15s ease;
+  }
+  .see-results:disabled{opacity:.35;cursor:not-allowed;}
+  .see-results:not(:disabled):hover{opacity:.88;}
+
+  #results{
+    display:none;
+    margin-top:20px;
+    padding-top:44px;
+    border-top:1px solid var(--line);
+  }
+  #results.show{display:block;}
+  .results-head{text-align:center;margin-bottom:36px;}
+  .results-head .eyebrow{margin-bottom:10px;}
+  .results-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:28px;
+    margin:0 0 6px;
+  }
+  .results-head .alt{
+    font-style:italic;
+    font-size:16px;
+    color:var(--ink-soft);
+  }
+  .bar-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:16px;
+  }
+  .bar-label{
+    flex:0 0 168px;
+    text-align:right;
+    font-size:13px;
+    line-height:1.35;
+  }
+  .bar-label .name{font-weight:600;}
+  .bar-label .name-alt{display:block;font-style:italic;color:var(--ink-soft);font-size:12px;}
+  .bar-track{
+    flex:1;
+    height:26px;
+    background:var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    position:relative;
+  }
+  .bar-fill{
+    height:100%;
+    width:0%;
+    border-radius:6px;
+    transition:width .7s cubic-bezier(.22,.9,.3,1);
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:8px;
+  }
+  .bar-fill span{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:13px;
+  }
+  .bar-fill.A{background:var(--gold);} .bar-fill.A span{color:var(--gold-bg);}
+  .bar-fill.B{background:var(--sage);} .bar-fill.B span{color:var(--sage-bg);}
+  .bar-fill.C{background:var(--plum);} .bar-fill.C span{color:var(--plum-bg);}
+  .bar-fill.D{background:var(--teal);} .bar-fill.D span{color:var(--teal-bg);}
+  .bar-fill.E{background:var(--rose);} .bar-fill.E span{color:var(--rose-bg);}
+
+  .top-lang{
+    margin-top:36px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:28px 26px;
+    text-align:center;
+  }
+  .top-lang .kicker{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+  .top-lang h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:24px;
+    margin:0 0 4px;
+  }
+  .top-lang .h3-alt{font-style:italic;font-size:14px;color:var(--ink-soft);margin-bottom:14px;}
+  .top-lang p{font-size:14px;line-height:1.7;color:var(--ink-soft);max-width:480px;margin:0 auto;}
+  .top-lang p.ro{color:var(--ink);}
+
+  .restart{
+    display:block;
+    margin:32px auto 0;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    padding:10px 22px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .restart:hover{border-color:var(--ink-soft);color:var(--ink);}
+
+  footer{
+    text-align:center;
+    margin-top:56px;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:520px){
+    h1{font-size:29px;}
+    .bar-label{flex-basis:118px;font-size:12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow" data-ro="Evaluare · Cele 5 Limbaje" data-en="Assessment · The 5 Love Languages">Evaluare · Cele 5 Limbaje</p>
+    <h1>
+      <span data-ro="Cele 5 Limbaje ale Iubirii" data-en="The 5 Love Languages">Cele 5 Limbaje ale Iubirii</span>
+    </h1>
+    <div class="lang-toggle">
+      <button id="btn-ro" class="active">RO</button>
+      <button id="btn-en">EN</button>
+    </div>
+  </header>
+
+  <p class="intro">
+    <span data-ro="Pentru fiecare pereche de mai jos, alege afirmația care ți se potrivește cel mai bine. La final vei vedea care sunt limbajele tale principale ale iubirii." data-en="For each pair below, choose the statement that describes you better. At the end you'll see your primary love languages.">
+      Pentru fiecare pereche de mai jos, alege afirmația care ți se potrivește cel mai bine. La final vei vedea care sunt limbajele tale principale ale iubirii.
+    </span>
+  </p>
+
+  <div class="progress-bar">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 30</div>
+  </div>
+
+  <div id="items"></div>
+
+  <div class="bottom-bar">
+    <div class="count" id="bottomCount" data-ro="0 din 30 completate" data-en="0 of 30 answered">0 din 30 completate</div>
+    <button class="see-results" id="seeResults" disabled data-ro="Vezi rezultatele" data-en="See my results">Vezi rezultatele</button>
+  </div>
+
+  <div id="results">
+    <div class="results-head">
+      <p class="eyebrow" data-ro="Rezultatul tău" data-en="Your result">Rezultatul tău</p>
+      <h2 data-ro="Limbajele tale ale iubirii" data-en="Your love languages">Limbajele tale ale iubirii</h2>
+      <p class="alt" data-ro="Din 30 de perechi de afirmații" data-en="From 30 paired statements">Din 30 de perechi de afirmații</p>
+    </div>
+    <div id="bars"></div>
+    <div id="topLang"></div>
+    <button class="restart" id="restartBtn" data-ro="Ia testul din nou" data-en="Retake the assessment">Ia testul din nou</button>
+  </div>
+
+  <footer data-ro="RHCCC · Resursă de discipolat" data-en="RHCCC · Discipleship resource">RHCCC · Resursă de discipolat</footer>
+</div>
+
+<script>
+const items = [
+[1,[{l:"A",en:"I like to receive notes of affirmation from you.",ro:"Îmi place să primesc bilețele de încurajare de la tine."},{l:"E",en:"I like it when you hug me.",ro:"Îmi place când mă îmbrățișezi."}]],
+[2,[{l:"B",en:"I like to spend one-on-one time with you.",ro:"Îmi place să petrec timp doar cu tine."},{l:"D",en:"I feel loved when you give me practical help.",ro:"Mă simt iubit(ă) când îmi oferi ajutor practic."}]],
+[3,[{l:"C",en:"I like it when you give me gifts.",ro:"Îmi place când îmi oferi cadouri."},{l:"B",en:"I like taking long walks with you.",ro:"Îmi place să fac plimbări lungi cu tine."}]],
+[4,[{l:"D",en:"I feel loved when you do things to help me.",ro:"Mă simt iubit(ă) când faci lucruri ca să mă ajuți."},{l:"E",en:"I feel loved when you hug or touch me.",ro:"Mă simt iubit(ă) când mă îmbrățișezi sau mă atingi."}]],
+[5,[{l:"E",en:"I feel loved when you hold me in your arms.",ro:"Mă simt iubit(ă) când mă ții în brațe."},{l:"C",en:"I feel loved when I receive a gift from you.",ro:"Mă simt iubit(ă) când primesc un cadou de la tine."}]],
+[6,[{l:"B",en:"I like to go places with you.",ro:"Îmi place să merg în diferite locuri cu tine."},{l:"E",en:"I like to hold hands with you.",ro:"Îmi place să ne ținem de mână."}]],
+[7,[{l:"A",en:"I feel loved when you acknowledge me.",ro:"Mă simt iubit(ă) când mă apreciezi/recunoști."},{l:"C",en:"Visible symbols of love (gifts) are very important to me.",ro:"Simbolurile vizibile ale iubirii (cadourile) sunt foarte importante pentru mine."}]],
+[8,[{l:"E",en:"I like to sit close to you.",ro:"Îmi place să stau aproape de tine."},{l:"A",en:"I like it when you tell me that I am attractive.",ro:"Îmi place când îmi spui că sunt atrăgător/atrăgătoare."}]],
+[9,[{l:"B",en:"I like to spend time with you.",ro:"Îmi place să petrec timp cu tine."},{l:"C",en:"I like to receive little gifts from you.",ro:"Îmi place să primesc cadouri mici de la tine."}]],
+[10,[{l:"D",en:"I know you love me when you help me.",ro:"Știu că mă iubești când mă ajuți."},{l:"A",en:"Your words of acceptance are important to me.",ro:"Cuvintele tale de acceptare sunt importante pentru mine."}]],
+[11,[{l:"B",en:"I like to be together when we do things.",ro:"Îmi place să fim împreună când facem diverse lucruri."},{l:"A",en:"I like the kind words you say to me.",ro:"Îmi plac cuvintele bune pe care mi le spui."}]],
+[12,[{l:"E",en:"I feel whole when we hug.",ro:"Mă simt împlinit(ă) când ne îmbrățișăm."},{l:"D",en:"What you do affects me more than what you say.",ro:"Ceea ce faci mă afectează mai mult decât ceea ce spui."}]],
+[13,[{l:"A",en:"I value your praise and try to avoid your criticism.",ro:"Prețuiesc laudele tale și încerc să evit criticile tale."},{l:"C",en:"Several inexpensive gifts mean more to me than one large expensive gift.",ro:"Câteva cadouri ieftine înseamnă mai mult pentru mine decât un singur cadou mare și scump."}]],
+[14,[{l:"E",en:"I feel closer to you when you touch me.",ro:"Mă simt mai aproape de tine când mă atingi."},{l:"B",en:"I feel close when we are talking or doing something together.",ro:"Mă simt aproape de tine când vorbim sau facem ceva împreună."}]],
+[15,[{l:"A",en:"I like you to compliment my achievements.",ro:"Îmi place să-mi apreciezi realizările prin cuvinte."},{l:"D",en:"I know you love me when you do things for me that you don't enjoy doing.",ro:"Știu că mă iubești când faci pentru mine lucruri pe care nu-ți place să le faci."}]],
+[16,[{l:"E",en:"I like for you to touch me when you walk by.",ro:"Îmi place să mă atingi când treci pe lângă mine."},{l:"B",en:"I like when you listen to me sympathetically.",ro:"Îmi place când mă asculți cu empatie."}]],
+[17,[{l:"C",en:"I really enjoy receiving gifts from you.",ro:"Îmi place foarte mult să primesc cadouri de la tine."},{l:"D",en:"I feel loved when you help me with my home projects.",ro:"Mă simt iubit(ă) când mă ajuți cu proiectele de acasă."}]],
+[18,[{l:"A",en:"I like when you compliment my appearance.",ro:"Îmi place când îmi apreciezi înfățișarea prin cuvinte."},{l:"B",en:"I feel loved when you take the time to understand my feelings.",ro:"Mă simt iubit(ă) când îți faci timp să-mi înțelegi sentimentele."}]],
+[19,[{l:"E",en:"I feel secure when you are touching me.",ro:"Mă simt în siguranță când mă atingi."},{l:"D",en:"Your acts of service make me feel loved.",ro:"Faptele tale de ajutor mă fac să mă simt iubit(ă)."}]],
+[20,[{l:"D",en:"I appreciate the many things you do for me.",ro:"Apreciez toate lucrurile pe care le faci pentru mine."},{l:"C",en:"I like receiving gifts that you make.",ro:"Îmi place să primesc cadouri făcute de tine."}]],
+[21,[{l:"B",en:"I really enjoy the feeling I get when you give me your undivided attention.",ro:"Îmi place foarte mult sentimentul pe care îl am când îmi acorzi toată atenția ta."},{l:"D",en:"I really enjoy the feeling I get when you do some act of service for me.",ro:"Îmi place foarte mult sentimentul pe care îl am când faci ceva pentru a mă ajuta."}]],
+[22,[{l:"C",en:"I feel loved when you celebrate my birthday with a gift.",ro:"Mă simt iubit(ă) când îmi sărbătorești ziua de naștere cu un cadou."},{l:"A",en:"I feel loved when you celebrate my birthday with meaningful words (written or spoken).",ro:"Mă simt iubit(ă) când îmi sărbătorești ziua de naștere cu cuvinte pline de sens (scrise sau rostite)."}]],
+[23,[{l:"D",en:"I feel loved when you help me out with my chores.",ro:"Mă simt iubit(ă) când mă ajuți cu treburile mele."},{l:"C",en:"I know you are thinking of me when you give me a gift.",ro:"Știu că te gândești la mine când îmi oferi un cadou."}]],
+[24,[{l:"C",en:"I appreciate it when you remember special days with a gift.",ro:"Apreciez când îți amintești de zilele speciale printr-un cadou."},{l:"B",en:"I appreciate it when you listen patiently and don't interrupt me.",ro:"Apreciez când mă asculți cu răbdare și nu mă întrerupi."}]],
+[25,[{l:"B",en:"I enjoy extended trips with you.",ro:"Îmi plac călătoriile lungi cu tine."},{l:"D",en:"I like to know that you are concerned enough to help me with my daily task.",ro:"Îmi place să știu că îți pasă suficient încât să mă ajuți cu sarcinile zilnice."}]],
+[26,[{l:"E",en:"Kissing me unexpectedly makes me feel loved.",ro:"Un sărut neașteptat mă face să mă simt iubit(ă)."},{l:"C",en:"Giving me a gift for no occasion makes me feel loved.",ro:"Primirea unui cadou fără vreun motiv anume mă face să mă simt iubit(ă)."}]],
+[27,[{l:"A",en:"I like to be told that you appreciate me.",ro:"Îmi place să mi se spună că mă apreciezi."},{l:"B",en:"I like for you to look at me when we are talking.",ro:"Îmi place să mă privești când vorbim."}]],
+[28,[{l:"C",en:"Your gifts are always special to me.",ro:"Cadourile tale sunt mereu speciale pentru mine."},{l:"E",en:"I feel loved when you kiss me.",ro:"Mă simt iubit(ă) când mă săruți."}]],
+[29,[{l:"A",en:"I feel loved when you tell me how much you appreciate me.",ro:"Mă simt iubit(ă) când îmi spui cât de mult mă apreciezi."},{l:"D",en:"I feel loved when you enthusiastically do a task I have requested.",ro:"Mă simt iubit(ă) când faci cu entuziasm o sarcină pe care ți-am cerut-o."}]],
+[30,[{l:"E",en:"I need to be hugged by you every day.",ro:"Am nevoie să mă îmbrățișezi în fiecare zi."},{l:"A",en:"I need your words of affirmation daily.",ro:"Am nevoie de cuvinte de încurajare zilnic."}]]
+];
+
+const langNames = {
+  A:{ro:"Cuvinte de încurajare",en:"Words of Affirmation"},
+  B:{ro:"Timp de calitate",en:"Quality Time"},
+  C:{ro:"Cadouri",en:"Receiving Gifts"},
+  D:{ro:"Fapte de ajutor",en:"Acts of Service"},
+  E:{ro:"Atingere fizică",en:"Physical Touch"}
+};
+const langDesc = {
+  A:{ro:"Cuvintele contează cel mai mult pentru tine — laude, încurajări și afirmații rostite sau scrise îți umplu inima.",en:"Words matter most to you — spoken or written praise and encouragement fill your heart."},
+  B:{ro:"Atenția neîmpărțită și timpul petrecut împreună te fac să te simți cu adevărat iubit(ă).",en:"Undivided attention and time spent together make you feel truly loved."},
+  C:{ro:"Un cadou, oricât de mic, este un simbol vizibil al grijii și gândului pentru tine.",en:"A gift, however small, is a visible symbol of thoughtfulness for you."},
+  D:{ro:"Faptele vorbesc mai tare decât cuvintele — ajutorul practic te face să te simți susținut(ă) și iubit(ă).",en:"Actions speak louder than words — practical help makes you feel supported and loved."},
+  E:{ro:"Apropierea fizică — o îmbrățișare, o atingere — este limbajul prin care simți cel mai profund iubirea.",en:"Physical closeness — a hug, a touch — is the language through which you feel love most deeply."}
+};
+
+let lang = "ro";
+const answers = {};
+
+function buildItems(){
+  const container = document.getElementById("items");
+  container.innerHTML = "";
+  items.forEach(([num, opts]) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "item";
+    const numLabel = document.createElement("div");
+    numLabel.className = "item-num";
+    numLabel.textContent = (lang === "ro" ? "Întrebarea " : "Question ") + num;
+    itemDiv.appendChild(numLabel);
+    opts.forEach((opt, idx) => {
+      const label = document.createElement("label");
+      label.className = "option";
+      label.dataset.item = num;
+      label.dataset.letter = opt.l;
+      const colorVarMap = {A:["--gold","--gold-bg"],B:["--sage","--sage-bg"],C:["--plum","--plum-bg"],D:["--teal","--teal-bg"],E:["--rose","--rose-bg"]};
+      label.style.setProperty("--sel-color", `var(${colorVarMap[opt.l][0]})`);
+      label.style.setProperty("--sel-bg", `var(${colorVarMap[opt.l][1]})`);
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "q" + num;
+      input.value = opt.l;
+
+      const chip = document.createElement("div");
+      chip.className = "chip " + opt.l;
+      chip.textContent = opt.l;
+
+      const textWrap = document.createElement("div");
+      textWrap.className = "option-text";
+      const primary = document.createElement("div");
+      primary.className = "txt-primary primary-text";
+      primary.textContent = lang === "ro" ? opt.ro : opt.en;
+      textWrap.appendChild(primary);
+
+      label.appendChild(input);
+      label.appendChild(chip);
+      label.appendChild(textWrap);
+
+      if(answers[num] === opt.l){ label.classList.add("selected"); }
+
+      label.addEventListener("click", () => {
+        answers[num] = opt.l;
+        itemDiv.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+        label.classList.add("selected");
+        updateProgress();
+      });
+
+      itemDiv.appendChild(label);
+    });
+    container.appendChild(itemDiv);
+  });
+}
+
+function updateProgress(){
+  const answered = Object.keys(answers).length;
+  const pct = Math.round((answered / 30) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressLabel").textContent = answered + " / 30";
+  document.getElementById("bottomCount").textContent = lang === "ro"
+    ? `${answered} din 30 completate`
+    : `${answered} of 30 answered`;
+  document.getElementById("seeResults").disabled = answered < 30;
+}
+
+function setLang(newLang){
+  lang = newLang;
+  document.getElementById("btn-ro").classList.toggle("active", lang === "ro");
+  document.getElementById("btn-en").classList.toggle("active", lang === "en");
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-ro][data-en]").forEach(el => {
+    el.textContent = el.dataset[lang];
+  });
+  buildItems();
+  updateProgress();
+  if(document.getElementById("results").classList.contains("show")){
+    renderResults();
+  }
+}
+
+document.getElementById("btn-ro").addEventListener("click", () => setLang("ro"));
+document.getElementById("btn-en").addEventListener("click", () => setLang("en"));
+
+function renderResults(){
+  const totals = {A:0,B:0,C:0,D:0,E:0};
+  Object.values(answers).forEach(l => totals[l]++);
+  const maxVal = Math.max(...Object.values(totals));
+  const order = ["A","B","C","D","E"].sort((a,b) => totals[b]-totals[a]);
+
+  const barsDiv = document.getElementById("bars");
+  barsDiv.innerHTML = "";
+  order.forEach(l => {
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    const labelDiv = document.createElement("div");
+    labelDiv.className = "bar-label";
+    labelDiv.innerHTML = `<span class="name">${langNames[l][lang]}</span>`;
+    const track = document.createElement("div");
+    track.className = "bar-track";
+    const fill = document.createElement("div");
+    fill.className = "bar-fill " + l;
+    const widthPct = maxVal > 0 ? (totals[l] / 30) * 100 : 0;
+    fill.style.width = "0%";
+    fill.innerHTML = `<span>${totals[l]}</span>`;
+    track.appendChild(fill);
+    row.appendChild(labelDiv);
+    row.appendChild(track);
+    barsDiv.appendChild(row);
+    requestAnimationFrame(() => { fill.style.width = widthPct + "%"; });
+  });
+
+  const topScore = totals[order[0]];
+  const topLangs = order.filter(l => totals[l] === topScore);
+  const topDiv = document.getElementById("topLang");
+  const kicker = lang === "ro"
+    ? (topLangs.length > 1 ? "Limbajele tale principale" : "Limbajul tău principal")
+    : (topLangs.length > 1 ? "Your primary languages" : "Your primary language");
+  const namesStr = topLangs.map(l => langNames[l][lang]).join(lang === "ro" ? " și " : " and ");
+  const descStr = topLangs.map(l => langDesc[l][lang]).join(" ");
+
+  topDiv.innerHTML = `
+    <div class="top-lang">
+      <div class="kicker">${kicker}</div>
+      <h3>${namesStr}</h3>
+      <p class="ro">${descStr}</p>
+    </div>
+  `;
+}
+
+document.getElementById("seeResults").addEventListener("click", () => {
+  renderResults();
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.classList.add("show");
+  resultsDiv.scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+document.getElementById("restartBtn").addEventListener("click", () => {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.getElementById("results").classList.remove("show");
+  buildItems();
+  updateProgress();
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+buildItems();
+updateProgress();
+</script>
+
+</body>
+</html>
